@@ -1,0 +1,26 @@
+.login-buttons {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem 0;
+
+  justify-content: space-around;
+}
+
+.form-group {
+  margin-top: 1rem;
+  width: 25rem;
+}
+
+.form-group h1 {
+  margin-bottom: 3rem;
+}
+
+.login-form {
+  margin-top: 5rem;
+}
+
+@media (max-width: 450px) {
+  .form-group {
+    width: 18rem;
+  }
+}
