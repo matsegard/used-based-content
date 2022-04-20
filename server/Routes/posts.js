@@ -18,7 +18,7 @@ async function runCode() {
   })
 
   const doc = await ryu.save()
-  console.log(doc)
+  // console.log(doc)
 }
 
 runCode()

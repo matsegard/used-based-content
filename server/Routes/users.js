@@ -1,27 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/User')
+const User = require('../models/User')
 
-router.get('/users', (req, res) => {
+router.get('/', (req, res) => {
     res.send('We are on users');
 });
 
-router.post('/', (req, res) => {
-    console.log(req.body);
+router.post('/', async (req, res) => {
+     try {
+        const user = new User(req.body);
+        let result = await user.save();
+        result = result.toObject();
+        if (result) {
+            delete result.password;
+            res.send(req.body);
+            console.log(result);
+        } else {
+            console.log("User already register");
+        }
+
+    } catch (e) {
+        res.send("Something Went Wrong");
+    }
 });
-
-async function runCode() {
-  const ryu = new Post({
-    username: 'Lovelanai',
-    password: 'peniskokare'
-  })
-
-  const doc = await ryu.save()
-  console.log(doc)
-}
-
-runCode()
-  .catch(error => { console.error(error) })
 
 
 module.exports = router;

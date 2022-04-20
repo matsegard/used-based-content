@@ -46,10 +46,11 @@ function Login() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    let result = await fetch("http://localhost:5500", {
+    let result = await fetch("http://localhost:5500/user", {
       method: "post",
       body: JSON.stringify({ username, password }),
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
