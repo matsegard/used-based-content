@@ -1,7 +1,28 @@
 import Form from "react-bootstrap/Form";
 import "./CreateContent.css";
+import React, { useState } from "react";
 
 function CreateContent() {
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    let result = await fetch("http://localhost:5500/posts", {
+      method: "post",
+      body: JSON.stringify({ title, description }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    result = await result.json();
+    console.warn(result);
+    if (result) {
+      alert("Nytt inlägg skapat");
+      settitle("");
+      setdescription("");
+    }
+  };
   return (
     <div>
       <div className="content-form">
@@ -14,28 +35,23 @@ function CreateContent() {
               placeholder="Resemål/Aktivitet/Restaurang"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Pris</Form.Label>
-            <div className="pris">
-              <Form.Control type="number" pattern="[0-9]*" />{" "}
-              <Form.Control
-                style={{ width: "3rem" }}
-                type="text"
-                placeholder="Kr"
-                disabled
-                readOnly
-              />
-            </div>
-          </Form.Group>
+          <Form.Group
+            className="mb-3"
+            controlId="exampleForm.ControlInput1"
+          ></Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Beskriving</Form.Label>
             <Form.Control as="textarea" rows={7} />
           </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
+          {/* <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Bild</Form.Label>
             <Form.Control type="file" />
-          </Form.Group>
-          <button type="submit" className="btn btn-primary">
+          </Form.Group> */}
+          <button
+            onClick={handleOnSubmit}
+            type="submit"
+            className="btn btn-primary"
+          >
             Skapa annons
           </button>
         </Form>

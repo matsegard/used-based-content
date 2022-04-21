@@ -6,23 +6,19 @@ router.get('/', (req, res) => {
     res.send('We are on posts');
 });
 
-router.post('/', (req, res) => {
-    console.log(req.body);
+router.post('/', async (req, res) => {
 
+  const newPost = new Post(req.body);
+  newPost.save()
+    .then(item => {
+      res.send("item saved to database");
+      console.log(newPost)
+    })
+    .catch(err => {
+      res.status(400).send("unable to save to database");
+    });
 });
 
-async function runCode() {
-  const ryu = new Post({
-    title: 'Liseberg',
-    description: 'Najs öl på tyrolen'
-  })
-
-  const doc = await ryu.save()
-  // console.log(doc)
-}
-
-runCode()
-  .catch(error => { console.error(error) })
 
 module.exports = router;
 
