@@ -7,16 +7,18 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+try {
+        const post = new Post(req.body);
+        let result = await post.save();
+        result = result.toObject();
+        if (result) {
+            res.send(req.body);
+            console.log(result);
+        } 
 
-  const newPost = new Post(req.body);
-  newPost.save()
-    .then(item => {
-      res.send("item saved to database");
-      console.log(newPost)
-    })
-    .catch(err => {
-      res.status(400).send("unable to save to database");
-    });
+    } catch (e) {
+        res.send("Something Went Wrong");
+    }
 });
 
 
