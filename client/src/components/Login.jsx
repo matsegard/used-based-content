@@ -6,22 +6,40 @@ function Login() {
   const [username, setuserName] = useState("");
   const [password, setpassword] = useState("");
 
+  // Skapa användare
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     let result = await fetch("http://localhost:5500/user", {
       method: "post",
       body: JSON.stringify({ username, password }),
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
     result = await result.json();
     console.warn(result);
     if (result) {
-      alert("Data saved successfully");
+      alert("Användare skapad");
       setpassword("");
       setuserName("");
+    }
+  };
+
+  // Logga in
+  const handleOnLogin = async (e) => {
+    e.preventDefault();
+    let result = await fetch("http://localhost:5500/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    result = await result.json();
+    console.warn(result);
+    if (result) {
+      alert("Inloggad");
+      console.log("du är inloggad");
     }
   };
 
@@ -71,7 +89,11 @@ function Login() {
               >
                 Skapa användare
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button
+                onClick={handleOnLogin}
+                type="submit"
+                className="btn btn-primary"
+              >
                 Logga in
               </button>
             </div>
