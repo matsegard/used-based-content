@@ -2,41 +2,39 @@ const express = require('express');
 const router = express.Router();
 const Users = require("../models/User");
 const bcrypt = require("bcrypt");
-
+const { application } = require('express');
+const cookieSession = require('cookie-session')
+const uuid = require('uuid')
 
 router.get('/', (req, res) => {
     res.send('We are on login');
 });
 
 router.post('/', async (req, res) => {
-    // Check if username and password is correct
-    const user = Users.findOne({username: req.body.username, password: req.body.password})
-    if (!user || !await bcrypt.compare(req.body.password, user.password)) {
-        return res.status(401).send('Wrong password or username')
+try {
+    const user = await Users.findOne({ username: req.body.username });
+    if (user) {
+      const cmp = await bcrypt.compare(req.body.password, user.password);
+      if (cmp) {
+          console.log('Inloggad')
+    req.session.id = uuid.v4()
+    req.session.username = req.body.username
+    req.session.loginDate = new Date()
+    req.session.role = undefined 
+    console.log(req.session)
+        res.send("Auth Successful");
+      } else {
+          console.log('Fel lösenord eller Användarnamn')
+        res.send("Wrong username or password.");
+      }
+    } else {
+      res.send("Wrong username or password.");
     }
-    
-    // Check if user aleady is logged in
-    if (req.session.id) {
-        return res.send('Already logged in')
-    } else{
-        console.log(req.body.username)
-    }
-
-    // Save info about the user to the session (a cookie stored on the clinet)
-     req.session.id = uuid.v4()
-     req.session.username = user.name
-     req.session.loginDate = new Date()
-     req.session.role = undefined // User could have a role (access privileges)
-     res.send('Successful login')
-})
-
-// router.delete('/logout', (req, res) => {
-//     if (!req.session.id) {
-//         return res.status(400).send('Cannot logout when you are not logged in')
-//     }
-//     req.session = null
-//     res.send('Your are now logged out')
-// })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server error Occured");
+  }
+});
 
 router.get('/', (req, res) => {
     // Check if we are authorized (e.g logged in)
@@ -44,9 +42,15 @@ router.get('/', (req, res) => {
         return res.status(401).send('You are not logged in')
     }
     // Send info about the session (a cookie stored on the clinet)
-    res.send(req.session)
+    console.log(req.session)
 })
 
-
+router.delete('/', (req, res) => {
+    if (!req.session.id) {
+        return res.status(400).send('Du är inte inloggad')
+    }
+    req.session = null
+    res.send('Du är nu utloggad')
+})
 
 module.exports = router;

@@ -14,15 +14,17 @@ function Login() {
       body: JSON.stringify({ username, password }),
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
-    result = await result.json();
-    console.warn(result);
-    if (result) {
-      alert("Användare skapad");
+    if (result.ok) {
+      result = await result.json();
       setpassword("");
       setuserName("");
+      console.log("success");
+      return alert("Användare skapad");
     }
+    return alert("Användare finns redan");
   };
 
   // Logga in
@@ -39,8 +41,20 @@ function Login() {
     console.warn(result);
     if (result) {
       alert("Inloggad");
-      console.log("du är inloggad");
+      console.log("Du är inloggad");
     }
+  };
+
+  const handleOnTest = async (e) => {
+    e.preventDefault();
+    let result = await fetch("http://localhost:5500/login", {
+      method: "get",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    result = await result.json();
   };
 
   return (
@@ -95,6 +109,13 @@ function Login() {
                 className="btn btn-primary"
               >
                 Logga in
+              </button>
+              <button
+                onClick={handleOnTest}
+                type="submit"
+                className="btn btn-primary"
+              >
+                test
               </button>
             </div>
           </form>

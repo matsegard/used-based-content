@@ -1,37 +1,35 @@
 const mongoose = require('mongoose');
-const bcrypt = require("bcrypt");
- SALT_WORK_FACTOR = 10;
+// const bcrypt = require("bcrypt");
+
 
 const UserSchema = new mongoose.Schema({
-   username: {type:String, required:true, index: { unique: true }
-   },
+   username: {type:String, required:true},
    password: {type:String, required:true}
 });
 
 
+// UserSchema.pre("save", function (next) {
+//   const user = this
 
-UserSchema.pre("save", function (next) {
-  const user = this;
+//   if (this.isModified("password") || this.isNew) {
+//     bcrypt.genSalt(10, function (saltError, salt) {
+//       if (saltError) {
+//         return next(saltError)
+//       } else {
+//         bcrypt.hash(user.password, salt, function(hashError, hash) {
+//           if (hashError) {
+//             return next(hashError)
+//           }
 
-  if (this.isModified("password") || this.isNew) {
-    bcrypt.genSalt(10, function (saltError, salt) {
-      if (saltError) {
-        return next(saltError)
-      } else {
-        bcrypt.hash(user.password, salt, function(hashError, hash) {
-          if (hashError) {
-            return next(hashError)
-          }
-
-          user.password = hash
-          next()
-        })
-      }
-    })
-  } else {
-    return next()
-  }
-})
+//           user.password = hash
+//           next()
+//         })
+//       }
+//     })
+//   } else {
+//     return next()
+//   }
+// })
 
 // UserSchema.methods.comparePassword = function(password, callback) {
 //   bcrypt.compare(password, this.password, function(error, isMatch) {
@@ -42,5 +40,6 @@ UserSchema.pre("save", function (next) {
 //     }
 //   })
 // }
+
     
 module.exports = mongoose.model('Users', UserSchema);

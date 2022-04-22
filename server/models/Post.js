@@ -8,12 +8,8 @@ const PostSchema = new mongoose.Schema({
     description: {
         type: String,
         // required: true
-    }
-    // ,
-    // source: {
-    //     type: String
-    // },
-    // postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    },
+    postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 
