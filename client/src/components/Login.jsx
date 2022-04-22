@@ -19,9 +19,9 @@ function Login() {
     });
     if (result.ok) {
       result = await result.json();
+      console.warn(result);
       setpassword("");
       setuserName("");
-      console.log("success");
       return alert("Användare skapad");
     }
     return alert("Användare finns redan");
@@ -39,13 +39,12 @@ function Login() {
     });
     result = await result.json();
     console.warn(result);
-    if (result) {
-      alert("Inloggad");
-      console.log("Du är inloggad");
+    if (result.ok) {
+      alert("Du är inloggad");
     }
   };
 
-  const handleOnTest = async (e) => {
+  const handleOnLogOut = async (e) => {
     e.preventDefault();
     let result = await fetch("http://localhost:5500/login", {
       method: "get",
@@ -111,7 +110,7 @@ function Login() {
                 Logga in
               </button>
               <button
-                onClick={handleOnTest}
+                onClick={handleOnLogOut}
                 type="submit"
                 className="btn btn-primary"
               >

@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const PostSchema = new mongoose.Schema({
     title:  {
         type: String,
-        // required: true
+        required: true
     },
     description: {
         type: String,
-        // required: true
+         required: true
     },
-    postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+     postedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 

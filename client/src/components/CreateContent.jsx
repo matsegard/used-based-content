@@ -32,6 +32,8 @@ function CreateContent() {
             <Form.Label>Titel</Form.Label>
             <Form.Control
               type="text"
+              value={title}
+              onChange={(e) => settitle(e.target.value)}
               placeholder="Resemål/Aktivitet/Restaurang"
             />
           </Form.Group>
@@ -41,7 +43,12 @@ function CreateContent() {
           ></Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Beskriving</Form.Label>
-            <Form.Control as="textarea" rows={7} />
+            <Form.Control
+              onChange={(e) => setdescription(e.target.value)}
+              value={description}
+              as="textarea"
+              rows={7}
+            />
           </Form.Group>
           {/* <Form.Group controlId="formFile" className="mb-3">
             <Form.Label>Bild</Form.Label>

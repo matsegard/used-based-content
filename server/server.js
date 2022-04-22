@@ -21,7 +21,7 @@ app.use(cors());
 // COOKIE SESSION
 app.use(cookieSession({
     secret: 'aVeryS3cr3tK3y',
-    maxAge: 1000 * 20, // 10s (quick expiry for testing, usually longer!)
+    maxAge: 1000 * 1, // 10s (quick expiry for testing, usually longer!)
     sameSite: 'strict',
     httpOnly: true,
     secure: false

@@ -12,28 +12,35 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
 try {
+    // if (!req.session.user) {
+    //     console.log('redan inloggad')
+    //     return res.json('Already logged in')
+    // }
+    // Kollar om användarnamnet finns
     const user = await Users.findOne({ username: req.body.username });
     if (user) {
+        // Jämnför det hashade lösenordet som är sparat i databasen med lösenordet man skriver in i formen.
       const cmp = await bcrypt.compare(req.body.password, user.password);
       if (cmp) {
-          console.log('Inloggad')
+    console.log('Inloggad')
     req.session.id = uuid.v4()
-    req.session.username = req.body.username
+    req.session.username = user.username
     req.session.loginDate = new Date()
     req.session.role = undefined 
     console.log(req.session)
-        res.send("Auth Successful");
+        res.json("Du är inloggad");
       } else {
           console.log('Fel lösenord eller Användarnamn')
-        res.send("Wrong username or password.");
+        res.json("Wrong username or password.");
       }
     } else {
-      res.send("Wrong username or password.");
+      res.json("Wrong username or password.");
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server error Occured");
+    res.status(500).json("Internal Server error Occured");
   }
+
 });
 
 router.get('/', (req, res) => {

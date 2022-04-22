@@ -14,7 +14,7 @@ export default function Header() {
           <div className="hamburgerContainer">
             <div>
               <Link style={{ textDecoration: "none" }} to="/">
-                <img src={logo}></img>
+                <img alt="logo" src={logo}></img>
               </Link>
             </div>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -24,7 +24,7 @@ export default function Header() {
             <Nav className="me-auto navbarContent">
               <div className="logoContainer">
                 <Link style={{ textDecoration: "none" }} to="/">
-                  <img src={logo}></img>
+                  <img alt="logo" src={logo}></img>
                 </Link>
               </div>
               <div className="linkContainer">

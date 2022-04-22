@@ -8,12 +8,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    // Kollar om användarnamnet finns, finns det så händer inget, annars skapas ett hashat lösenord som sparas i databasen.
 const userNameExist = await User.findOne({username: req.body.username});
    if (userNameExist) {
      console.log('username taken');
-     return res.status(409).send('Username already exists')
+     return res.status(409).json('Användare finns redan')
    } 
-   res.status(200).json('Sucess')
+   res.status(200).json('Användare skapad')
 const hashedPassword = await bcrypt.hash(req.body.password, 10)
 const user = new User(req.body)
 user.password = hashedPassword;
