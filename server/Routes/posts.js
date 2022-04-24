@@ -1,21 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const postModels = require("../models/Post");
+const postsController = require("../controllers/posts.controllers");
 
-router.get("/", async (req, res) => {
-  const userPosts = await postModels.find({});
-  res.send(userPosts);
-});
+router.get("/", postsController.getAllPosts);
 
-router.post("/", async (req, res) => {
-  const post = new postModels({
-    title: req.body.title,
-    description: req.body.description,
-    postedBy: req.session._id,
-  });
-  const newPost = await post.save(post);
-  console.log(newPost);
-  res.json(newPost.title);
-});
+router.post("/", postsController.createPost);
 
 module.exports = router;
