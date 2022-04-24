@@ -1,0 +1,19 @@
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.contentContainer h1 {
+  font-size: 3rem;
+  margin: 2rem 0;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.postContent {
+  padding: 2rem;
+}

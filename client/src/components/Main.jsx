@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import ContentPage from "./ContentPage";
-import CreateContent from "./CreateContent";
-import Login from "./Login";
+import ContentPage from "./pages/ContentPage";
+import CreateContent from "./pages/CreateContent";
+import Login from "./pages/Login";
 import "./Main.css";
-import SignOrLog from "./SignOrLog";
-import CreateUser from "./CreateUser";
+import SignOrLog from "./pages/SignOrLog";
+import CreateUser from "./pages/CreateUser";
 
 export default function Main() {
   return (

@@ -86,7 +86,24 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.send(`${req.session.username}`);
+  res.send(`${req.session.user}`);
 });
+
+// router.get("/", (req, res) => {
+//   // Check if we are authorized (e.g logged in)
+//   if (!req.session.id) {
+//     return res.status(401).send("You are not logged in");
+//   }
+//   // Send info about the session (a cookie stored on the clinet)
+//   console.log(req.session);
+// });
+
+// router.delete("/", (req, res) => {
+// //   if (!req.session.id) {
+// //     return res.status(400).send("Du är inte inloggad");
+// //   }
+// //   req.session = null;
+// //   res.send("Du är nu utloggad");
+// // });
 
 module.exports = router;

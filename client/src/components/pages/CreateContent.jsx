@@ -5,6 +5,7 @@ import React, { useState } from "react";
 function CreateContent() {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
+  const [user, setUser] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -21,13 +22,14 @@ function CreateContent() {
       alert("Nytt inlägg skapat");
       settitle("");
       setdescription("");
+      setUser("");
     }
   };
   return (
     <div>
       <div className="content-form">
         <h1>Skriv en recension</h1>
-        <Form action="">
+        <Form style={{ width: "120%" }} action="">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Titel</Form.Label>
             <Form.Control
@@ -58,6 +60,7 @@ function CreateContent() {
             onClick={handleOnSubmit}
             type="submit"
             className="btn btn-primary"
+            style={{ width: "100%" }}
           >
             Skapa annons
           </button>

@@ -17,11 +17,13 @@ function Login() {
       },
     });
 
-    if (result) {
+    if (result.ok) {
       result = await result.json();
-
-      console.log(result);
+      setpassword("");
+      setuserName("");
+      return alert("Inloggning lyckades!");
     }
+    return alert("Fel användarnamn / lösenord");
   };
 
   // const handleOnLogOut = async (e) => {
