@@ -9,7 +9,7 @@ function Login() {
   // Logga in
   const handleOnLogin = async (e) => {
     e.preventDefault();
-    let result = await fetch("http://localhost:5500/login", {
+    let result = await fetch("http://localhost:5500/user/login", {
       method: "post",
       body: JSON.stringify({ username, password }),
       headers: {
@@ -21,7 +21,6 @@ function Login() {
       result = await result.json();
 
       console.log(result);
-      return alert("Du är inloggad");
     }
   };
 
