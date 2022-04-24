@@ -39,7 +39,7 @@ export default function Header() {
                   </Nav>
                 </Link>
 
-                <Link to="/Login">
+                <Link to="/SignOrLog">
                   <Nav>
                     <AiOutlineUser /> Logga in
                   </Nav>

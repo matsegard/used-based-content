@@ -1,9 +1,12 @@
 .login-buttons {
   display: flex;
-  flex-direction: row;
   margin: 2rem 0;
-
+  width: 100%;
   justify-content: space-around;
+}
+
+.login-buttons button {
+  width: 100%;
 }
 
 .form-group {

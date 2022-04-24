@@ -1,41 +1,33 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 
-function Login() {
+export default function CreateUser() {
   const [username, setuserName] = useState("");
   const [password, setpassword] = useState("");
 
-  // Logga in
-  const handleOnLogin = async (e) => {
+  // Skapa användare
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    let result = await fetch("http://localhost:5500/login", {
+    let result = await fetch("http://localhost:5500/user", {
       method: "post",
       body: JSON.stringify({ username, password }),
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
-
-    if (result) {
+    if (result.ok) {
       result = await result.json();
-
-      console.log(result);
-      return alert("Du är inloggad");
+      console.warn(result);
+      setpassword("");
+      setuserName("");
+      return alert("Användare skapad");
     }
+    return alert("Användare finns redan");
   };
-
-  // const handleOnLogOut = async (e) => {
-  //   e.preventDefault();
-  //   let result = await fetch("http://localhost:5500/login", {
-  //     method: "get",
-  //     body: JSON.stringify({ username, password }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   result = await result.json();
-  // };
 
   return (
     <div className="login-container">
@@ -43,7 +35,7 @@ function Login() {
         <div className="login-form">
           <form action="" id="loginform">
             <div className="form-group">
-              <h1>Logga in</h1>
+              <h1>Skapa användare</h1>
               <label>Användarnamn</label>
               <input
                 type="text"
@@ -77,11 +69,11 @@ function Login() {
             </div>
             <div className="login-buttons">
               <button
-                onClick={handleOnLogin}
                 type="submit"
+                onClick={handleOnSubmit}
                 className="btn btn-primary"
               >
-                Logga in
+                Skapa användare
               </button>
             </div>
           </form>
@@ -90,4 +82,3 @@ function Login() {
     </div>
   );
 }
-export default Login;
