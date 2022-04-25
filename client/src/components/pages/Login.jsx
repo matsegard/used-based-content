@@ -11,7 +11,7 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    let result = await fetch("http://localhost:5500/user/login", {
+    let result = await fetch("/user/login", {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: {

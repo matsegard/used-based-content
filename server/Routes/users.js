@@ -5,6 +5,7 @@ const cookieSession = require("cookie-session");
 const User = require("../models/User.models");
 const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
+const generateToken = require("../utils/generateToken");
 
 // theft proof cookie
 users.use(
@@ -49,8 +50,10 @@ users.post(
 
     if (user) {
       res.status(201).json({
+        _id: user._id,
         username: user.username,
         password: user.password,
+        token: generateToken(user._id),
       });
     } else {
       res.status(400);
@@ -70,6 +73,7 @@ users.post(
     if (user && (await user.matchPassword(password))) {
       res.json({
         username: user.username,
+        token: generateToken(user._id),
       });
     } else {
       res.status(401);

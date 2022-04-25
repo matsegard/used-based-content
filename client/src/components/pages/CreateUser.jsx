@@ -11,7 +11,7 @@ export default function CreateUser() {
   // Skapa användare
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    let result = await fetch("http://localhost:5500/user", {
+    let result = await fetch("/user", {
       method: "post",
       body: JSON.stringify({ username, password }),
       headers: {

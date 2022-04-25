@@ -12,7 +12,7 @@ export default function Contentpage() {
   ]);
 
   useEffect(() => {
-    fetch("http://localhost:5500/posts")
+    fetch("/posts")
       .then((res) => {
         if (res.ok) {
           return res.json();

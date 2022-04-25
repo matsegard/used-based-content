@@ -1,19 +1,20 @@
 const express = require("express");
-const app = express();
+const dotenv = require("dotenv");
+
 const mongoose = require("mongoose");
-require("dotenv/config");
 const PORT = 5500;
 const cors = require("cors");
 const colors = require("colors");
 const cookieSession = require("cookie-session");
 
+const app = express();
+dotenv.config();
 //Import routes
 const postsRoute = require("./routes/posts");
 const usersRoute = require("./routes/users");
 
 //Define Middleware
 app.use(express.json());
-app.use(cors());
 
 // COOKIE SESSION
 app.use(
