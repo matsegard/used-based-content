@@ -1,32 +1,96 @@
 const express = require("express");
-const router = express.Router();
+const users = express.Router();
 const cookieSession = require("cookie-session");
-const usersController = require("../controllers/users.controllers");
+
+const User = require("../models/User.models");
+const asyncHandler = require("express-async-handler");
+const { v4: uuidv4 } = require("uuid");
 
 // theft proof cookie
-router.use(
+users.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
     sameSite: "strict",
     httpOnly: false,
     secrue: false,
-    maxAge: 1000 * 100,
+    maxAge: 24 * 60 * 60 * 1000,
   })
 );
 
 // alla startar med /users
 
 // Redovisar alla registrerade Användare i databasen
-router.get("/", usersController.getAllUsers);
+users.get("/", async (req, res) => {
+  try {
+    const users = await User.find({});
+    return res.json(users);
+  } catch (err) {
+    res.json("error");
+  }
+});
 
 // Skapar ny Användare
-router.post("/", usersController.createUser);
+users.post(
+  "/",
+  asyncHandler(async (req, res) => {
+    const { username, password } = req.body;
+
+    const doesUserExist = await User.findOne({ username });
+
+    if (doesUserExist) {
+      res.status(404);
+      throw new Error("Användare redan registrerad");
+    }
+
+    const user = await User.create({
+      username: username,
+      password: password,
+    });
+
+    if (user) {
+      res.status(201).json({
+        username: user.username,
+        password: user.password,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Globalt fel");
+    }
+  })
+);
 
 // Logga in Användare
-router.post("/login", usersController.loginUser);
+users.post(
+  "/login",
+  asyncHandler(async (req, res) => {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+
+    if (user && (await user.matchPassword(password))) {
+      res.json({
+        username: user.username,
+      });
+    } else {
+      res.status(401);
+      throw new Error("Fel användarnamn eller lösenord");
+    }
+
+    // save info about the user to the session (a coookie stored on the client)
+    req.session.id = uuidv4();
+    req.session.username = req.body.username;
+    req.session.loginDate = new Date();
+    console.log(req.session, "hejhej");
+  })
+);
 
 // Redovisar inloggad Användare
-router.get("/login", usersController.currentUser);
+users.get("/login", (req, res) => {
+  if (req.session.id) {
+    res.send("inloggad användare finns");
+  }
+  res.send(`${req.session.username}`);
+});
 
 // Nästkommande functions är under produktion
 
@@ -47,4 +111,4 @@ router.get("/login", usersController.currentUser);
 // //   res.send("Du är nu utloggad");
 // // });
 
-module.exports = router;
+module.exports = users;

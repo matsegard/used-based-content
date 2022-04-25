@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
+import { useEffect } from "react";
 
-function Login() {
-  const [username, setuserName] = useState("");
-  const [password, setpassword] = useState("");
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
-  // Logga in
-  const handleOnLogin = async (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
+
     let result = await fetch("http://localhost:5500/user/login", {
-      method: "post",
+      method: "POST",
       body: JSON.stringify({ username, password }),
       headers: {
         "Content-Type": "application/json",
@@ -19,30 +21,20 @@ function Login() {
 
     if (result.ok) {
       result = await result.json();
-      setpassword("");
-      setuserName("");
-      return alert("Inloggning lyckades!");
+      setPassword("");
+      setUsername("");
+      console.log(result);
+      return alert("inloggning lyckades");
     }
+
     return alert("Fel användarnamn / lösenord");
   };
-
-  // const handleOnLogOut = async (e) => {
-  //   e.preventDefault();
-  //   let result = await fetch("http://localhost:5500/login", {
-  //     method: "get",
-  //     body: JSON.stringify({ username, password }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   result = await result.json();
-  // };
 
   return (
     <div className="login-container">
       <div className="row d-flex justify-content-center flex-column align-items-center">
         <div className="login-form">
-          <form action="" id="loginform">
+          <form onSubmit={loginHandler} id="loginform">
             <div className="form-group">
               <h1>Logga in</h1>
               <label>Användarnamn</label>
@@ -54,7 +46,7 @@ function Login() {
                 aria-describedby="userNameHelp"
                 placeholder="Ange användarnamn"
                 value={username}
-                onChange={(e) => setuserName(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <small
                 id="userNameHelp"
@@ -64,12 +56,12 @@ function Login() {
             <div className="form-group">
               <label>Lösenord</label>
               <input
-                type="password"
                 className="form-control"
                 id="exampleInputPassword1"
                 placeholder="Ange lösenord"
+                type="password"
                 value={password}
-                onChange={(e) => setpassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <small
                 id="passworderror"
@@ -77,11 +69,7 @@ function Login() {
               ></small>
             </div>
             <div className="login-buttons">
-              <button
-                onClick={handleOnLogin}
-                type="submit"
-                className="btn btn-primary"
-              >
+              <button type="submit" className="btn btn-primary">
                 Logga in
               </button>
             </div>
@@ -90,5 +78,5 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 export default Login;
