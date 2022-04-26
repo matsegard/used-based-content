@@ -12,7 +12,7 @@ const generateToken = require("../utils/generateToken");
 users.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
-    maxAge: 1000 * 100, // 10s (quick expiry for testing, usually longer!)
+    maxAge: 1000 * 600, // 10s (quick expiry for testing, usually longer!)
     httpOnly: false,
     secure: false,
   })
@@ -67,11 +67,10 @@ users.post(
   "/login",
   asyncHandler(async (req, res) => {
 
-    //  if (req.session.id){
-    //     console.log('redan inloggad')
-    //    return res.json("redan inloggad")
-      
-    //  }
+     if (req.session.id){
+        console.log('redan inloggad')
+       return res.status(401).send("Redan inloggad");
+     }
 
       const { username, password } = req.body;
       
@@ -95,23 +94,31 @@ users.post(
       } else {
         res.status(401);
         throw new Error("Fel användarnamn eller lösenord");
-      } 
-       
-    
-          // save info about the user to the session (a coookie stored on the client)
-  
+      }   
   })
 );
 
 // Redovisar inloggad Användare
 users.get("/login", (req, res) => {
   if(!req.session.id){
-  return console.log('inte inloggad')
+       console.log('inte inloggad')
+    return res.status(401).send("You are not logged in.");
   } else {
-  console.log('inloggad')
-res.json(req.session)
+    res.json(req.session)
+    console.log('inloggad')
   }
 });
+
+
+// Logga ut
+users.delete("/login", asyncHandler(async(req, res) => {
+  if (!req.session.id){
+     return res.status(400).send('Cannot logout when you are not logged in')
+  } 
+  req.session = null
+  res.json("Du är nu utloggad")
+  
+}));
 
 // Nästkommande functions är under produktion
 

@@ -12,8 +12,12 @@ const UserProvider = (props) => {
     setIsSignedIn(true);
   }
 
+  function logout() {
+    setIsSignedIn(false);
+  }
+
   return (
-    <UserContext.Provider value={{ isSignedIn, setIsSignedIn, login }}>
+    <UserContext.Provider value={{ isSignedIn, setIsSignedIn, login, logout }}>
       {props.children}
     </UserContext.Provider>
   );

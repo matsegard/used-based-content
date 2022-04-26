@@ -8,8 +8,34 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useUser();
+  const { logout } = useUser();
   // const [error, setError] = useState(false);
   const navigate = useNavigate();
+
+  const LogoutHandler = async (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Vill du logga ut?")) {
+      let result = await fetch("/user/login", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (result.ok) {
+        result = await result.json();
+        logout();
+        console.log(result);
+
+        return alert("Du är utloggad");
+      }
+
+      return alert("Utloggning misslyckades");
+    } else {
+      console.log("du valde att ej logga ut");
+    }
+  };
 
   const LoginHandler = async (e) => {
     e.preventDefault();
@@ -33,7 +59,9 @@ export default function Login() {
       return alert("inloggning lyckades");
     }
 
-    return alert("Fel användarnamn / lösenord");
+    return alert(
+      "Du är redan inloggad eller angett användarnamn eller lösenord"
+    );
   };
 
   return (
@@ -81,6 +109,13 @@ export default function Login() {
                 className="btn btn-primary"
               >
                 Logga in
+              </button>
+              <button
+                onClick={LogoutHandler}
+                pe="submit"
+                className="btn btn-primary"
+              >
+                Logga ut
               </button>
             </div>
           </form>
