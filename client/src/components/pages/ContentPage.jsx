@@ -24,7 +24,7 @@ export default function Contentpage() {
   return (
     <section className="contentContainer">
       <div>
-        <h1>Posts</h1>
+        <h1>Recensioner</h1>
         <div className="contentBox">
           {posts.map((post) => (
             <div className="postContent" key={post.title}>
@@ -38,7 +38,7 @@ export default function Contentpage() {
                 <Card.Body>
                   <Card.Title>{post.title}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    {post.user} User: "användare"
+                    Recension av: {post.postedBy}
                   </Card.Subtitle>
                   <Card.Text>{post.description}</Card.Text>
                 </Card.Body>

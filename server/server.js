@@ -15,6 +15,16 @@ const usersRoute = require("./routes/users");
 
 //Define Middleware
 app.use(express.json());
+// theft proof cookie
+// COOKIE SESSION
+app.use(
+  cookieSession({
+    secret: "aVeryS3cr3tK3y",
+    maxAge: 1000 * 600, // 10s (quick expiry for testing, usually longer!)
+    httpOnly: false,
+    secure: false,
+  })
+);
 
 app.use("/posts", postsRoute);
 app.use("/user", usersRoute);

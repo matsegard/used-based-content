@@ -7,16 +7,16 @@ const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
 const generateToken = require("../utils/generateToken");
 
-// theft proof cookie
-// COOKIE SESSION
-users.use(
-  cookieSession({
-    secret: "aVeryS3cr3tK3y",
-    maxAge: 1000 * 600, // 10s (quick expiry for testing, usually longer!)
-    httpOnly: false,
-    secure: false,
-  })
-);
+ // theft proof cookie
+ // COOKIE SESSION
+ users.use(
+   cookieSession({
+     secret: "aVeryS3cr3tK3y",
+     maxAge: 1000 * 600, // 10s (quick expiry for testing, usually longer!)
+     httpOnly: false,
+     secure: false,
+   })
+ );
 // alla startar med /users
 
 // Redovisar alla registrerade Användare i databasen
