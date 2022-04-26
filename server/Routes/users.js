@@ -8,16 +8,16 @@ const { v4: uuidv4 } = require("uuid");
 const generateToken = require("../utils/generateToken");
 
 // theft proof cookie
+// COOKIE SESSION
 users.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
+    maxAge: 1000 * 1, // 10s (quick expiry for testing, usually longer!)
     sameSite: "strict",
     httpOnly: false,
-    secrue: false,
-    maxAge: 24 * 60 * 60 * 1000,
+    secure: false,
   })
 );
-
 // alla startar med /users
 
 // Redovisar alla registrerade Användare i databasen
@@ -81,10 +81,10 @@ users.post(
     }
 
     // save info about the user to the session (a coookie stored on the client)
-    req.session.id = uuidv4();
-    req.session.username = req.body.username;
+    req.session.id = user.id;
+    req.session.username = user.username;
     req.session.loginDate = new Date();
-    console.log(req.session, "hejhej");
+    console.log(req.session);
   })
 );
 

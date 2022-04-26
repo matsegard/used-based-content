@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+import { useUser } from "../context/UserContext";
+
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-
+  const navigate = useNavigate();
+  const { setIsSignedIn } = useUser();
   const loginHandler = async (e) => {
     e.preventDefault();
 
@@ -24,6 +27,8 @@ const Login = () => {
       setPassword("");
       setUsername("");
       console.log(result);
+      // setIsSignedIn(true);
+      navigate("/");
       return alert("inloggning lyckades");
     }
 
@@ -34,7 +39,7 @@ const Login = () => {
     <div className="login-container">
       <div className="row d-flex justify-content-center flex-column align-items-center">
         <div className="login-form">
-          <form onSubmit={loginHandler} id="loginform">
+          <form id="loginform">
             <div className="form-group">
               <h1>Logga in</h1>
               <label>Användarnamn</label>
@@ -69,7 +74,11 @@ const Login = () => {
               ></small>
             </div>
             <div className="login-buttons">
-              <button type="submit" className="btn btn-primary">
+              <button
+                onClick={loginHandler}
+                type="submit"
+                className="btn btn-primary"
+              >
                 Logga in
               </button>
             </div>
@@ -78,5 +87,4 @@ const Login = () => {
       </div>
     </div>
   );
-};
-export default Login;
+}
