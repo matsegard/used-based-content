@@ -26,7 +26,7 @@ export default function Login() {
       if (result.ok) {
         result = await result.json();
         logout();
-        console.log(result);
+        console.log();
 
         return alert("Du är utloggad");
       }
@@ -60,7 +60,7 @@ export default function Login() {
     }
 
     return alert(
-      "Du är redan inloggad eller angett användarnamn eller lösenord"
+      "Du är redan inloggad eller angett fel användarnamn eller lösenord"
     );
   };
 

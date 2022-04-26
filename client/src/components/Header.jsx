@@ -5,8 +5,16 @@ import { AiOutlineEdit, AiOutlineRead, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import "./Header.css";
+import { useUser } from "./context/UserContext";
 
 export default function Header() {
+  const { loggedIn } = useUser();
+
+  let korv = "Logga in";
+  if (!loggedIn) {
+    korv = "Min sida";
+  }
+
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" variant="light" sticky="top">
@@ -41,7 +49,8 @@ export default function Header() {
 
                 <Link to="/SignOrLog">
                   <Nav>
-                    <AiOutlineUser /> Logga in
+                    <AiOutlineUser />
+                    {korv}
                   </Nav>
                 </Link>
               </div>
