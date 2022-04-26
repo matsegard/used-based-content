@@ -28,7 +28,7 @@ export default function Login() {
       setUsername("");
       console.log(result);
       // setIsSignedIn(true);
-      navigate("/");
+      navigate("/CreateContent");
       return alert("inloggning lyckades");
     }
 
