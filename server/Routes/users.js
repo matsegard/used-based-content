@@ -12,8 +12,7 @@ const generateToken = require("../utils/generateToken");
 users.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
-    maxAge: 1000 * 1, // 10s (quick expiry for testing, usually longer!)
-    sameSite: "strict",
+    maxAge: 1000 * 100, // 10s (quick expiry for testing, usually longer!)
     httpOnly: false,
     secure: false,
   })
@@ -54,6 +53,7 @@ users.post(
         username: user.username,
         password: user.password,
         token: generateToken(user._id),
+
       });
     } else {
       res.status(400);
@@ -66,46 +66,63 @@ users.post(
 users.post(
   "/login",
   asyncHandler(async (req, res) => {
-    const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    //  if (req.session.id){
+    //     console.log('redan inloggad')
+    //    return res.json("redan inloggad")
+      
+    //  }
 
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        username: user.username,
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401);
-      throw new Error("Fel användarnamn eller lösenord");
-    }
-
-    // save info about the user to the session (a coookie stored on the client)
-    req.session.id = user.id;
-    req.session.username = user.username;
-    req.session.loginDate = new Date();
-    console.log(req.session);
+      const { username, password } = req.body;
+      
+      const user = await User.findOne({ username });
+      
+      if (user && (await user.matchPassword(password))) {
+      
+          req.session.id = user.id;
+          req.session.username = user.username;
+          req.session.loginDate = new Date();
+          console.log(req.session.username, req.session.id)
+        
+         res.json({
+          username: req.session.username,
+          id: req.session.id,
+          loginDate: req.session.loginDate,
+          token: generateToken(user._id), 
+        });
+           
+          
+      } else {
+        res.status(401);
+        throw new Error("Fel användarnamn eller lösenord");
+      } 
+       
+    
+          // save info about the user to the session (a coookie stored on the client)
+  
   })
 );
 
 // Redovisar inloggad Användare
 users.get("/login", (req, res) => {
-  if (req.session.id) {
-    res.send("inloggad användare finns");
+  if(!req.session.id){
+  return console.log('inte inloggad')
+  } else {
+  console.log('inloggad')
+res.json(req.session)
   }
-  res.send(`${req.session.username}`);
 });
 
 // Nästkommande functions är under produktion
 
-// router.get("/", (req, res) => {
-//   // Check if we are authorized (e.g logged in)
-//   if (!req.session.id) {
-//     return res.status(401).send("You are not logged in");
-//   }
-//   // Send info about the session (a cookie stored on the clinet)
-//   console.log(req.session);
-// });
+//  router.get("/", (req, res) => {
+// //    Check if we are authorized (e.g logged in)
+//    if (!req.session.id) {
+//      return res.status(401).send("You are not logged in");
+//    }
+//    // Send info about the session (a cookie stored on the clinet)
+//    console.log(req.session);
+//  });
 
 // router.delete("/", (req, res) => {
 // //   if (!req.session.id) {

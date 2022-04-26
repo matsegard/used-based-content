@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const asyncHandler = require("express-async-handler");
 const Post = require("../models/Post.models");
-const User = require("../Routes/users");
+
 
 // Hämtar alla recensioner
 router.get(
@@ -17,6 +17,7 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
+      
     const { title, description } = req.body;
 
     if (!title || !description) {

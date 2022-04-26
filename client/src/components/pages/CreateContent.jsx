@@ -9,6 +9,7 @@ function CreateContent() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
     let result = await fetch("/posts", {
       method: "post",
       body: JSON.stringify({ title, description }),

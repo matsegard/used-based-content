@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
@@ -7,7 +7,7 @@ import "./Login.css";
 export default function CreateUser() {
   const [username, setuserName] = useState("");
   const [password, setpassword] = useState("");
-
+  const navigate = useNavigate();
   // Skapa användare
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +24,7 @@ export default function CreateUser() {
       console.warn(result);
       setpassword("");
       setuserName("");
+      navigate("/Login");
       return alert("Användare skapad");
     }
     return alert("Användare finns redan");

@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
-
 import { useUser } from "../context/UserContext";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const { login } = useUser();
+  // const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const { setIsSignedIn } = useUser();
-  const loginHandler = async (e) => {
+
+  const LoginHandler = async (e) => {
     e.preventDefault();
 
     let result = await fetch("/user/login", {
@@ -26,8 +26,9 @@ export default function Login() {
       result = await result.json();
       setPassword("");
       setUsername("");
+      login();
       console.log(result);
-      // setIsSignedIn(true);
+
       navigate("/CreateContent");
       return alert("inloggning lyckades");
     }
@@ -75,7 +76,7 @@ export default function Login() {
             </div>
             <div className="login-buttons">
               <button
-                onClick={loginHandler}
+                onClick={LoginHandler}
                 type="submit"
                 className="btn btn-primary"
               >
