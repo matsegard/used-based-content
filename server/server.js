@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
-    maxAge: 1000 * 600, // 10s (quick expiry for testing, usually longer!)
+    maxAge: 24 * 60 * 60 * 1000,
     httpOnly: false,
     secure: false,
   })

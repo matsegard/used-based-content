@@ -7,6 +7,7 @@ import SignOrLog from "./pages/SignOrLog";
 import CreateUser from "./pages/CreateUser";
 import MyProfile from "./pages/MyProfile";
 import NotLoggedIn from "./pages/NotLoggedIn";
+import EditPost from "./pages/editPost";
 
 export default function Main() {
   return (
@@ -19,6 +20,7 @@ export default function Main() {
         <Route path="/NotLoggedIn" element={<NotLoggedIn />} />
         <Route path="/MyProfile" element={<MyProfile />} />
         <Route path="/CreateContent" element={<CreateContent />} />
+        <Route path="/posts/:id" element={<EditPost />} />
       </Routes>
     </div>
   );

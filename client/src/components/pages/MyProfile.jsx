@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { useState, useEffect } from "react";
 import "./MyProfile.css";
+import { IoTrashBinOutline } from "react-icons/io5";
+import { BsPencil } from "react-icons/bs";
+import EditPost from "./editPost";
+import { MdOutlineClose } from "react-icons/md";
 
 export default function MyProfile() {
   const { login } = useUser();
-  const [changePasswordForm, setchangePasswordForm] = useState(false);
   const [showUserPosts, setShowUserPosts] = useState(true);
+  const [changePost, setChangePost] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,7 +32,6 @@ export default function MyProfile() {
         setPassword("");
         setUsername("");
         setShowUserPosts(true);
-        setchangePasswordForm(false);
         return alert("Du har bytt lösenord!");
       }
       return alert("Du har angett fel användarnamn, Försök igen :)");
@@ -78,13 +81,23 @@ export default function MyProfile() {
   //visar rendrerade posts från inloggad användare
   const showPosts = async () => {
     setShowUserPosts(true);
-    setchangePasswordForm(false);
+    setChangePost(false);
+  };
+  // visar ändra lösenord form och döljer posts
+  const hidePosts = async () => {
+    setShowUserPosts(false);
+  };
+  // Visar redigera post
+  const showChangePost = async () => {
+    setChangePost(true);
+  };
+  // Döljer redigera post
+  const hideChangePost = async () => {
+    setChangePost(false);
   };
 
-  // Rendrerar ett byt lösenord-form
-  const changePassword = async () => {
-    setchangePasswordForm(true);
-    setShowUserPosts(false);
+  const removePost = async () => {
+    window.confirm("Vill du ta bort valt inlägg?");
   };
 
   return (
@@ -95,11 +108,7 @@ export default function MyProfile() {
         <button onClick={showPosts} pe="submit" className="btn btn-primary">
           Mina Recensioner
         </button>
-        <button
-          onClick={changePassword}
-          pe="submit"
-          className="btn btn-primary"
-        >
+        <button onClick={hidePosts} pe="submit" className="btn btn-primary">
           Ändra lösenord
         </button>
         <Link to="/">
@@ -112,9 +121,22 @@ export default function MyProfile() {
           </button>
         </Link>
       </div>
-      {!changePasswordForm ? (
+      {/* Om changePost = true: rendrera redigera post. om false: rendrera ingenting */}
+      {!changePost ? (
         <></>
       ) : (
+        <div className="changePostContainer">
+          {/* <section>
+            <button onClick={hideChangePost} className="leaveBtn cleanButton">
+              <MdOutlineClose />
+            </button>
+
+            <EditPost />
+          </section> */}
+        </div>
+      )}
+      {/* Om setshowuserposts = true: rendrera posts. om false: rendrera form */}
+      {!showUserPosts ? (
         <form id="loginform">
           <div className="form-group">
             <h1>Ändra lösenord</h1>
@@ -153,10 +175,6 @@ export default function MyProfile() {
             </button>
           </div>
         </form>
-      )}
-      {/* Renderar ut recensioner */}
-      {!showUserPosts ? (
-        <></>
       ) : (
         <div>
           <h1>Mina recensioner</h1>
@@ -171,7 +189,20 @@ export default function MyProfile() {
                   }}
                 >
                   <div>
-                    <GoTrashcan />
+                    <div className="postIcons">
+                      <Link to="/posts/:id">
+                        <button
+                          className="cleanButton"
+                          onClick={showChangePost}
+                        >
+                          <BsPencil />
+                        </button>
+                      </Link>
+                      <button onClick={removePost} className="cleanButton">
+                        <IoTrashBinOutline />
+                      </button>
+                    </div>
+
                     <Card.Body>
                       <Card.Title>{post.title}</Card.Title>
                       <Card.Subtitle className="mb-2 text-muted">

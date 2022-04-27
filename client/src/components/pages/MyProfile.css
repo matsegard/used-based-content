@@ -21,3 +21,54 @@
     width: 10rem;
 }
 
+
+
+.postIcons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.postIcons svg{
+  font-size: 1.5rem;
+}
+
+
+.changePostContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 10;
+    height: 90%;
+    backdrop-filter: blur(1px);
+    background-color: rgba(0, 0, 0, 0.245);
+    width: 100%;
+    top: 6rem;
+}
+
+.changePostContainer section{
+    background-color: white;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    position: relative;
+  
+
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+
+}
+
+.leaveBtn{
+    position: absolute;
+    left:3rem;
+    top: 2rem;
+    font-size: 2rem;
+}
+
+.cleanButton{
+    background:none;
+    border: none;
+}

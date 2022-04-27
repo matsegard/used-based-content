@@ -10,8 +10,12 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   postedBy: {
-    type: String
+    type: String,
   },
+  _id: {
+       type: mongoose.Schema.Types.ObjectId,
+     
+  }
 });
 
 module.exports = mongoose.model("Posts", PostSchema);

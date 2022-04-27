@@ -30,7 +30,7 @@ export default function Login() {
       login();
       console.log(result);
 
-      navigate("/CreateContent");
+      navigate("/MyProfile");
       return alert("inloggning lyckades");
     }
 
