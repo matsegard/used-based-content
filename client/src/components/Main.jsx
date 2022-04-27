@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import "./Main.css";
 import SignOrLog from "./pages/SignOrLog";
 import CreateUser from "./pages/CreateUser";
+import MyProfile from "./pages/MyProfile";
+import NotLoggedIn from "./pages/NotLoggedIn";
 
 export default function Main() {
   return (
@@ -14,6 +16,8 @@ export default function Main() {
         <Route path="/SignOrLog" element={<SignOrLog />} />
         <Route path="/CreateUser" element={<CreateUser />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/NotLoggedIn" element={<NotLoggedIn />} />
+        <Route path="/MyProfile" element={<MyProfile />} />
         <Route path="/CreateContent" element={<CreateContent />} />
       </Routes>
     </div>

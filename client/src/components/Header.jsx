@@ -5,15 +5,11 @@ import { AiOutlineEdit, AiOutlineRead, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import "./Header.css";
+
 import { useUser } from "./context/UserContext";
 
 export default function Header() {
-  const { loggedIn } = useUser();
-
-  let korv = "Logga in";
-  if (!loggedIn) {
-    korv = "Min sida";
-  }
+  const { isSignedIn } = useUser();
 
   return (
     <div>
@@ -41,18 +37,34 @@ export default function Header() {
                     <AiOutlineRead /> Recensioner
                   </Nav>
                 </Link>
-                <Link to="/CreateContent">
-                  <Nav>
-                    <AiOutlineEdit /> Skriv Recension
-                  </Nav>
-                </Link>
-
-                <Link to="/SignOrLog">
-                  <Nav>
-                    <AiOutlineUser />
-                    {korv}
-                  </Nav>
-                </Link>
+                {!isSignedIn ? (
+                  <Link to="/NotLoggedIn">
+                    <Nav>
+                      <AiOutlineEdit /> Skriv Recension
+                    </Nav>
+                  </Link>
+                ) : (
+                  <Link to="/CreateContent">
+                    <Nav>
+                      <AiOutlineEdit /> Skriv Recension
+                    </Nav>
+                  </Link>
+                )}
+                {!isSignedIn ? (
+                  <Link to="/SignOrLog">
+                    <Nav>
+                      <AiOutlineUser />
+                      Logga in
+                    </Nav>
+                  </Link>
+                ) : (
+                  <Link to="/MyProfile">
+                    <Nav>
+                      <AiOutlineUser />
+                      Min sida
+                    </Nav>
+                  </Link>
+                )}
               </div>
             </Nav>
           </Navbar.Collapse>

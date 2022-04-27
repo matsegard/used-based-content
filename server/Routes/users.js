@@ -80,7 +80,7 @@ users.post(
       req.session.loginDate = new Date();
       console.log(req.session.username, req.session.id);
 
-      res.json({
+      res.status(201).json({
         username: req.session.username,
         id: req.session.id,
         loginDate: req.session.loginDate,
@@ -97,11 +97,38 @@ users.post(
 users.get("/login", (req, res) => {
   if (!req.session.id) {
     console.log("Ej inloggad");
-    return res.status(401).send("You are not logged in.");
+    return res.status(401).send("Du är inte inloggad");
   } else {
-    res.json(req.session);
+   const user = {
+      id :req.session.id,
+      username: req.session.username,
+    }
+     res.status(201).json(user)
     console.log("Inloggad");
   }
+});
+
+// Redovisar  Användare by id
+users.get("/login:id", (req, res) => {
+
+});
+
+// Ändra lösenord och användarnamn
+users.put("/login", async (req, res) => {
+  const { username, password } = req.session.id;
+    const user = await User.findOne({ username });
+
+   if (user && (await user.matchPassword(password))){
+     console.log("fungerar") 
+   }
+  // if (!req.session.id) {
+  //   // ändra lösen
+  //   console.log("Hittar inte användare");
+  //   return res.status(401).send("Hittar inte användare");
+  // } else {
+  //   res.status(200).json("Lösenord bytt");
+  //   console.log("Lösenord Bytt");
+  // }
 });
 
 // Logga ut
@@ -113,6 +140,7 @@ users.delete(
     }
     req.session = null;
     res.json("Du är nu utloggad");
+    
   })
 );
 

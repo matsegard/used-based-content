@@ -53,17 +53,13 @@ function CreateContent() {
               rows={7}
             />
           </Form.Group>
-          {/* <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Bild</Form.Label>
-            <Form.Control type="file" />
-          </Form.Group> */}
           <button
             onClick={handleOnSubmit}
             type="submit"
             className="btn btn-primary"
             style={{ width: "100%" }}
           >
-            Skapa annons
+            Skapa recension
           </button>
         </Form>
       </div>

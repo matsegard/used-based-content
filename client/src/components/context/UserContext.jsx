@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const UserContext = createContext({
   setIsSignedIn: false,
@@ -8,41 +8,28 @@ export const UserContext = createContext({
 const UserProvider = (props) => {
   const [isSignedIn, setIsSignedIn] = useState(Boolean);
 
-  async function login() {
-    // let loggedIn = false;
-    // let result = await fetch("/user/login", {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // if (result.ok) {
-    //   loggedIn = true;
-    // }
+  const login = async () => {
+    let result = await fetch("/user/login", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (result.ok) {
+      setIsSignedIn(true);
+      console.log("inloggad");
+    } else {
+      setIsSignedIn(false);
+      console.log("utloggad");
+    }
+  };
 
-    // console.log(loggedIn);
-
-    setIsSignedIn(true);
-    // console.log(isSignedIn);
-  }
-
-  async function logout() {
-    // let loggedIn = false;
-    // let result = await fetch("/user/login", {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // if (result.ok) {
-    //   loggedIn = false;
-    // }
-    setIsSignedIn(false);
-    // console.log(loggedIn);
-  }
+  useEffect(() => {
+    login();
+  }, []);
 
   return (
-    <UserContext.Provider value={{ isSignedIn, setIsSignedIn, login, logout }}>
+    <UserContext.Provider value={{ isSignedIn, setIsSignedIn, login }}>
       {props.children}
     </UserContext.Provider>
   );
