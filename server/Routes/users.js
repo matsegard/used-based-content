@@ -1,7 +1,7 @@
 const express = require("express");
 const users = express.Router();
 const cookieSession = require("cookie-session");
-
+const bcrypt = require("bcrypt");
 const User = require("../models/User.models");
 const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
@@ -108,27 +108,27 @@ users.get("/login", (req, res) => {
   }
 });
 
-// Redovisar  Användare by id
-users.get("/login:id", (req, res) => {
 
-});
 
-// Ändra lösenord och användarnamn
+// Ändra lösenord 
 users.put("/login", async (req, res) => {
-  const { username, password } = req.session.id;
-    const user = await User.findOne({ username });
+  // const { password } = req.body;
+  const { username } = req.body;
+  var userId = req.session.id;
+  if(!req.session.id){
+    return console.log('inte du')
+  }
 
-   if (user && (await user.matchPassword(password))){
-     console.log("fungerar") 
-   }
-  // if (!req.session.id) {
-  //   // ändra lösen
-  //   console.log("Hittar inte användare");
-  //   return res.status(401).send("Hittar inte användare");
-  // } else {
-  //   res.status(200).json("Lösenord bytt");
-  //   console.log("Lösenord Bytt");
-  // }
+if(username === req.session.username){
+  const password = req.body.password;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newPassword = await User.findByIdAndUpdate(userId, { password: hashedPassword });
+console.log(newPassword)
+res.status(201).json('Byte av lösenord lyckades')
+} else {
+  console.log('fel användarnamn')
+  res.status(401).send("Fel användarnamn");
+}
 });
 
 // Logga ut

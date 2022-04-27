@@ -1,30 +1,38 @@
 import { useUser } from "../context/UserContext";
 import { Link } from "react-router-dom";
+import Card from "react-bootstrap/Card";
 import { useState, useEffect } from "react";
+import "./MyProfile.css";
 
 export default function MyProfile() {
   const { login } = useUser();
   const [changePasswordForm, setchangePasswordForm] = useState(false);
+  const [showUserPosts, setShowUserPosts] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // byta lösenord
   const changePasswordHandler = async (e) => {
-    e.preventDefault();
-    let result = await fetch("/user/login", {
-      method: "PUT",
-      body: JSON.stringify({ username, password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (window.confirm("Bekräfta byte av lösenord")) {
+      e.preventDefault();
+      let result = await fetch("/user/login", {
+        method: "PUT",
+        body: JSON.stringify({ username, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (result.ok) {
-      result = await result.json();
-      setPassword("");
-      setUsername("");
-      console.log("lösenordet ändrat");
+      if (result.ok) {
+        result = await result.json();
+        setPassword("");
+        setUsername("");
+        setShowUserPosts(true);
+        setchangePasswordForm(false);
+        return alert("Du har bytt lösenord!");
+      }
+      return alert("Du har angett fel användarnamn, Försök igen :)");
     }
-    return alert("funkar ej");
   };
 
   // Logga ut knapp
@@ -48,21 +56,45 @@ export default function MyProfile() {
     }
   };
 
+  const [posts, setPosts] = useState([
+    {
+      title: "",
+      description: "",
+      user: "",
+    },
+  ]);
+
+  useEffect(() => {
+    fetch("/posts/:postedBy")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+
+      .then((jsonRes) => setPosts(jsonRes));
+  });
+
+  //visar rendrerade posts från inloggad användare
+  const showPosts = async () => {
+    setShowUserPosts(true);
+    setchangePasswordForm(false);
+  };
+
   // Rendrerar ett byt lösenord-form
   const changePassword = async () => {
     setchangePasswordForm(true);
+    setShowUserPosts(false);
   };
 
   return (
-    <div>
+    <div className="profileContainer">
       <h1>Min profil</h1>
 
-      <Link to="/">
-        <button onClick={LogoutHandler} pe="submit" className="btn btn-primary">
-          Logga ut
+      <div className="buttonContainer">
+        <button onClick={showPosts} pe="submit" className="btn btn-primary">
+          Mina Recensioner
         </button>
-      </Link>
-      {!changePasswordForm ? (
         <button
           onClick={changePassword}
           pe="submit"
@@ -70,6 +102,18 @@ export default function MyProfile() {
         >
           Ändra lösenord
         </button>
+        <Link to="/">
+          <button
+            onClick={LogoutHandler}
+            pe="submit"
+            className="btn btn-secondary"
+          >
+            Logga ut
+          </button>
+        </Link>
+      </div>
+      {!changePasswordForm ? (
+        <></>
       ) : (
         <form id="loginform">
           <div className="form-group">
@@ -88,11 +132,11 @@ export default function MyProfile() {
             <small id="userNameHelp" className="text-danger form-text"></small>
           </div>
           <div className="form-group">
-            <label>Lösenord</label>
+            <label>Ange nytt lösenord</label>
             <input
               className="form-control"
               id="exampleInputPassword1"
-              placeholder="Ange lösenord"
+              placeholder="Ange nytt lösenord"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -109,6 +153,38 @@ export default function MyProfile() {
             </button>
           </div>
         </form>
+      )}
+      {/* Renderar ut recensioner */}
+      {!showUserPosts ? (
+        <></>
+      ) : (
+        <div>
+          <h1>Mina recensioner</h1>
+          <div className="contentBox">
+            {posts.map((post) => (
+              <div className="postContent" key={post.title}>
+                <Card
+                  style={{
+                    maxWidth: "40rem",
+                    minWidth: "20rem",
+                    padding: "2rem 2rem",
+                  }}
+                >
+                  <div>
+                    <GoTrashcan />
+                    <Card.Body>
+                      <Card.Title>{post.title}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Recension av: {post.postedBy}
+                      </Card.Subtitle>
+                      <Card.Text>{post.description}</Card.Text>
+                    </Card.Body>
+                  </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

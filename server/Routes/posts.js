@@ -16,6 +16,7 @@ router.use(
     secure: false,
   })
 );
+
 // Hämtar alla recensioner
 router.get(
   "/",
@@ -29,8 +30,6 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-// const { postedBy } = req.user.id;
-//     let result = User.findById(postedBy);
     
     const { title, description } = req.body;
     const postedBy = req.session.username
@@ -53,5 +52,19 @@ router.post(
     }
   })
 );
+
+//  Hämtar alla recensioner skrivna av inloggad användare
+router.get("/:postedBy", asyncHandler(async (req, res) =>{
+      const postedBy = req.session.username
+      const userPosts = await Post.find({ postedBy });
+      res.send(userPosts);
+}))
+
+// Låter användare ta bort sina recensioner
+router.delete("/:postedBy", asyncHandler(async (req, res) =>{
+      const postedBy = req.session.username
+      const userPosts = await Post.find({ postedBy });
+      res.send(userPosts);
+}))
 
 module.exports = router;

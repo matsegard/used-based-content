@@ -1,0 +1,23 @@
+.profileContainer{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 3rem;
+    text-align: center;
+    margin: 0 4rem;
+}
+
+
+.buttonContainer{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.buttonContainer button{
+    width: 10rem;
+}
+
