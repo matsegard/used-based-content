@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { useState, useEffect } from "react";
 import "./MyProfile.css";
-import { IoTrashBinOutline } from "react-icons/io5";
+
 import { BsPencil } from "react-icons/bs";
 import EditPost from "./editPost";
 import { MdOutlineClose } from "react-icons/md";
@@ -54,8 +54,6 @@ export default function MyProfile() {
         return alert("Du är utloggad");
       }
       return alert("Utloggning misslyckades");
-    } else {
-      console.log("du valde att ej logga ut");
     }
   };
 
@@ -102,17 +100,25 @@ export default function MyProfile() {
       <h1>Min profil</h1>
 
       <div className="buttonContainer">
-        <button onClick={showPosts} pe="submit" className="btn btn-primary">
+        <button
+          onClick={showPosts}
+          pe="submit"
+          className="btn btn-primary customBtn"
+        >
           Mina Recensioner
         </button>
-        <button onClick={hidePosts} pe="submit" className="btn btn-primary">
+        <button
+          onClick={hidePosts}
+          pe="submit"
+          className="btn btn-secondary customBtn"
+        >
           Ändra lösenord
         </button>
         <Link to="/">
           <button
             onClick={LogoutHandler}
             pe="submit"
-            className="btn btn-secondary"
+            className="btn btn-danger customBtn"
           >
             Logga ut
           </button>
@@ -173,7 +179,7 @@ export default function MyProfile() {
           </div>
         </form>
       ) : (
-        <div>
+        <div style={{ paddingTop: "1rem" }}>
           <h1>Mina recensioner</h1>
           <div className="contentBox">
             {posts.map((post) => (
@@ -193,12 +199,6 @@ export default function MyProfile() {
                           onClick={showChangePost}
                         >
                           <BsPencil />
-                        </button>
-                      </Link>
-
-                      <Link to={`/posts/${post._id}`}>
-                        <button className="cleanButton">
-                          <IoTrashBinOutline />
                         </button>
                       </Link>
                     </div>
