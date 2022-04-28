@@ -20,7 +20,7 @@ To run the project, simply plit the terminal and type the following in seperate 
 ## Install and Startup
 Navigate to server
 ```
-cd. server
+cd server
 ```
 Install packages
 ```
@@ -37,7 +37,7 @@ npm run dev
 ## Install and Startup
 Navigate to Client (React)
 ```
-cd. client
+cd client
 ```
 Install packages
 ```
