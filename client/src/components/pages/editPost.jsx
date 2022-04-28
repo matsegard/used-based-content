@@ -1,5 +1,6 @@
 import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function EditPost() {
   const [title, settitle] = useState("");
@@ -9,8 +10,8 @@ export default function EditPost() {
   const savePostEdit = async (e) => {
     e.preventDefault();
     if (window.confirm("Vill du ändra ditt inlägg?")) {
-      let result = await fetch("/posts/:id", {
-        method: "put",
+      let result = await fetch(`/posts/:id`, {
+        method: "PUT",
         body: JSON.stringify({ title, description }),
         headers: {
           "Content-Type": "application/json",
@@ -23,6 +24,7 @@ export default function EditPost() {
         settitle("");
         setdescription("");
         setUser("");
+        console.log(result);
       }
     }
   };
