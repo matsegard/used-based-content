@@ -1,11 +1,12 @@
 import Form from "react-bootstrap/Form";
 import "./CreateContent.css";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateContent() {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
-  // const [user, setUser] = useState("");
+  const navigate = useNavigate();
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ function CreateContent() {
       alert("Nytt inlägg skapat");
       settitle("");
       setdescription("");
-      // setUser("");
+      navigate("/MyProfile");
     }
   };
   return (

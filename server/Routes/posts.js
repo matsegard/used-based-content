@@ -12,7 +12,7 @@ const { ObjectId } = require("mongodb");
 router.use(
   cookieSession({
     secret: "aVeryS3cr3tK3y",
-    maxAge: 1000 * 1000, // 10s (quick expiry for testing, usually longer!)
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
     httpOnly: false,
     secure: false,
   })
@@ -36,7 +36,6 @@ router.post(
     const postedBy = req.session.username;
     const id = req.params.id
     const { _id } = ObjectId(id)
-    //  postId = req.params.id;
 
     if (!title || !description) {
       res.status(400);
@@ -72,29 +71,35 @@ router.get("/postedBy", asyncHandler(async (req, res) =>{
         const currentPost = await Post.findById(id)
         console.log(currentPost)
          if (!currentPost) {
-           res.json("No post with this id does exist")
+           res.status(201).json("No post with this id does exist");
            return
          } else{
-           res.json(currentPost)
-
+           res.status(201).json(currentPost);
          }
       }))
 
  router.put("/:id", asyncHandler( async (req, res) => {
-    const  { postedBy }  = req.session.username;
-    const { postId } = req.params;
-    if(postId === ObjectId) {   
-      const newPost = await Post.findByIdAndUpdate(postId, { title, description});
-      console.log(newPost)
-     }
+  const { id } = req.params;
+      const newPost = await Post.findByIdAndUpdate(id, req.body);
+      if(!newPost){
+        res.json("No post with this id does exist")
+           return
+      }  else{
+           res.json(newPost)
+           console.log(newPost)
+         }
  }))
 
 
 // Låter användare ta bort sina recensioner
 router.delete("/:id", asyncHandler(async (req, res) =>{
-      const postedBy = req.session.username
-      const userPosts = await Post.find({ postedBy });
-      res.send(userPosts);
+     const { id } = req.params;
+      const userPosts = await Post.findByIdAndRemove(id);
+      if (!userPosts) {
+      res.json("Id inte hittat");
+      return;
+    }
+      res.json(userPosts);
 }))
 
 module.exports = router;

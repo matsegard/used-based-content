@@ -8,8 +8,6 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useUser();
-
-  // const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const LoginHandler = async (e) => {

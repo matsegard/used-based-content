@@ -64,6 +64,7 @@ export default function MyProfile() {
       title: "",
       description: "",
       user: "",
+      _id: "",
     },
   ]);
 
@@ -94,10 +95,6 @@ export default function MyProfile() {
   // Döljer redigera post
   const hideChangePost = async () => {
     setChangePost(false);
-  };
-
-  const removePost = async () => {
-    window.confirm("Vill du ta bort valt inlägg?");
   };
 
   return (
@@ -190,15 +187,21 @@ export default function MyProfile() {
                 >
                   <div>
                     <div className="postIcons">
-                      <button className="cleanButton" onClick={showChangePost}>
-                        <BsPencil />
-                      </button>
+                      <Link to={`/posts/${post._id}`}>
+                        <button
+                          className="cleanButton"
+                          onClick={showChangePost}
+                        >
+                          <BsPencil />
+                        </button>
+                      </Link>
 
-                      <button onClick={removePost} className="cleanButton">
-                        <IoTrashBinOutline />
-                      </button>
+                      <Link to={`/posts/${post._id}`}>
+                        <button className="cleanButton">
+                          <IoTrashBinOutline />
+                        </button>
+                      </Link>
                     </div>
-
                     <Card.Body>
                       <Card.Title>{post.title}</Card.Title>
                       <Card.Subtitle className="mb-2 text-muted">

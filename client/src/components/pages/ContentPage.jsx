@@ -28,7 +28,7 @@ export default function Contentpage() {
         <h1>Recensioner</h1>
         <div className="contentBox">
           {posts.map((post) => (
-            <div className="postContent" key={post.title}>
+            <div className="postContent" key={post._id}>
               <Card
                 style={{
                   maxWidth: "40rem",
@@ -42,7 +42,6 @@ export default function Contentpage() {
                     Recension av: {post.postedBy}
                   </Card.Subtitle>
                   <Card.Text>{post.description}</Card.Text>
-                  <p>id: {post._id}</p>
                 </Card.Body>
               </Card>
             </div>

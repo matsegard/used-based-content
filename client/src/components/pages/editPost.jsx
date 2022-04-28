@@ -1,15 +1,20 @@
 import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function EditPost() {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [user, setUser] = useState("");
+  const location = useLocation();
+  const id = location.pathname;
+  const navigate = useNavigate();
 
   const savePostEdit = async (e) => {
     e.preventDefault();
     if (window.confirm("Vill du ändra ditt inlägg?")) {
-      let result = await fetch(`/posts/:id`, {
+      let result = await fetch(`${id}`, {
         method: "PUT",
         body: JSON.stringify({ title, description }),
         headers: {
@@ -19,10 +24,11 @@ export default function EditPost() {
       result = await result.json();
       console.warn(result);
       if (result) {
-        alert("Nytt inlägg skapat");
+        alert("Ditt inlägg är ändrat!");
         settitle("");
         setdescription("");
         setUser("");
+        navigate("/MyProfile");
         console.log(result);
       }
     }
@@ -32,7 +38,6 @@ export default function EditPost() {
     <div>
       <div>
         <div className="content-form">
-          <h1>Ändra recension</h1>
           <Form style={{ width: "120%" }} action="">
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Titel</Form.Label>
