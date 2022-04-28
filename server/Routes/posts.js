@@ -33,8 +33,8 @@ router.post(
   asyncHandler(async (req, res) => {
     
     const { title, description } = req.body;
-    const {postedBy} = req.session.username;
-    // const  { postId } = Post._id.toString();
+    const postedBy = req.session.username;
+    const { _id } = ObjectId()
 
     if (!title || !description) {
       res.status(400);
@@ -44,24 +44,28 @@ router.post(
         title,
         description,
         postedBy,
-        postId,
+        _id,
       });
 
       const createdPost = await post.save();
       console.log(createdPost)
+      console.log(postedBy)
       res.status(201).json(createdPost);
     }
   })
 );
 
-// router.get("/:id", asyncHandler(async (req, res) => {
-//    const foundPost = await Post.findById(ObjectId)
-//   if (!foundPost) {
-//     res.status(404).send("post with given id does not exist");
-//   } else {
-//     res.json(foundPost);
-//   }
-// }))
+// Ska hämta resencion by id
+  // router.get("/:id", asyncHandler(async (req, res) => {
+    //  const { id } = req.params
+    //  const currentPost = await Post.findById(id)
+    //  if (!currentPost) {
+      //  res.json("No post with this id does exist")
+      //  return
+    //  } else{
+      //  res.json(currentPost)
+    //  }
+  // }))
 
 //  Hämtar alla recensioner skrivna av inloggad användare
 router.get("/:postedBy", asyncHandler(async (req, res) =>{
@@ -71,9 +75,8 @@ router.get("/:postedBy", asyncHandler(async (req, res) =>{
 }))
 
 router.put("/:id", asyncHandler( async (req, res) => {
-   const { title, description } = req.body;
    const  { postedBy }  = req.session.username;
-   const { postId } = ObjectId;
+   const { postId } = req.params;
    if(postId === ObjectId) {
      
      const newPost = await Post.findByIdAndUpdate(postId, { title, description});

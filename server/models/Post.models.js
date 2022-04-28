@@ -12,10 +12,9 @@ const PostSchema = new mongoose.Schema({
   postedBy: {
     type: String,
   },
-  _id: {
-       type: mongoose.Schema.Types.ObjectId,
-     
-  }
+   _id: {
+        type: String
+   }
 });
 
 module.exports = mongoose.model("Posts", PostSchema);

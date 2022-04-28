@@ -7,7 +7,8 @@ export default function Contentpage() {
     {
       title: "",
       description: "",
-      user: "",
+      postedBy: "",
+      _id: "",
     },
   ]);
 
@@ -41,6 +42,7 @@ export default function Contentpage() {
                     Recension av: {post.postedBy}
                   </Card.Subtitle>
                   <Card.Text>{post.description}</Card.Text>
+                  <p>id: {post._id}</p>
                 </Card.Body>
               </Card>
             </div>
