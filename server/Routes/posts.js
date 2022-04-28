@@ -49,13 +49,10 @@ router.post(
       });
 
       const createdPost = await post.save();
-      console.log(createdPost)
       res.status(201).json(createdPost);
     }
   })
 );
-
-
 
 //  Hämtar alla recensioner skrivna av inloggad användare
 router.get("/postedBy", asyncHandler(async (req, res) =>{
@@ -69,7 +66,7 @@ router.get("/postedBy", asyncHandler(async (req, res) =>{
       router.get("/:id", asyncHandler(async (req, res) => {
          const { id } = req.params;
         const currentPost = await Post.findById(id)
-        console.log(currentPost)
+   
          if (!currentPost) {
            res.status(201).json("No post with this id does exist");
            return
@@ -86,7 +83,6 @@ router.get("/postedBy", asyncHandler(async (req, res) =>{
            return
       }  else{
            res.json(newPost)
-           console.log(newPost)
          }
  }))
 
@@ -96,10 +92,10 @@ router.delete("/:id", asyncHandler(async (req, res) =>{
      const { id } = req.params;
       const userPosts = await Post.findByIdAndRemove(id);
       if (!userPosts) {
-      res.json("Id inte hittat");
+      res.status(400).json("Id inte hittat");
       return;
     }
-      res.json(userPosts);
+      res.status(200).json(userPosts);
 }))
 
 module.exports = router;

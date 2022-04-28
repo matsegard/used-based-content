@@ -17,10 +17,9 @@ const UserProvider = (props) => {
     });
     if (result.ok) {
       setIsSignedIn(true);
-      console.log("inloggad");
     } else {
       setIsSignedIn(false);
-      console.log("utloggad");
+      console.log("Du är utloggad");
     }
   };
 

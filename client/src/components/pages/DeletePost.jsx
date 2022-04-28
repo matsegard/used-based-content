@@ -7,7 +7,7 @@ export default function DeletePost() {
 
   const navigate = useNavigate();
   const removePost = async () => {
-    if (window.confirm("Vill du ta bort inlägget?")) {
+    if (window.confirm("Vill du ta bort recensionen?")) {
       let result = await fetch(`${id}`, {
         method: "DELETE",
         headers: {
@@ -21,14 +21,18 @@ export default function DeletePost() {
         return alert("Borttaget");
       }
       return alert("Det gick inte att ta bort inlägget");
-    } else {
-      console.log("du valde att ej logga ut");
     }
   };
 
   return (
     <div>
-      <button onClick={removePost}>Ta bort inlägg</button>
+      <button
+        className="btn btn-danger"
+        style={{ width: "100%" }}
+        onClick={removePost}
+      >
+        Ta bort recension
+      </button>
     </div>
   );
 }

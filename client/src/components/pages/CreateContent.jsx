@@ -19,9 +19,8 @@ function CreateContent() {
       },
     });
     result = await result.json();
-    console.warn(result);
     if (result) {
-      alert("Nytt inlägg skapat");
+      alert("Ny recension skapad");
       settitle("");
       setdescription("");
       navigate("/MyProfile");

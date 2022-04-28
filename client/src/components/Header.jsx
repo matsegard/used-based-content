@@ -61,7 +61,7 @@ export default function Header() {
                   <Link to="/MyProfile">
                     <Nav>
                       <AiOutlineUser />
-                      Min sida
+                      Min profil
                     </Nav>
                   </Link>
                 )}

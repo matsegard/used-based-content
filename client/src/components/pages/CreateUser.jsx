@@ -21,13 +21,14 @@ export default function CreateUser() {
     });
     if (result.ok) {
       result = await result.json();
-      console.warn(result);
       setpassword("");
       setuserName("");
       navigate("/Login");
       return alert("Användare skapad");
     }
-    return alert("Användare finns redan");
+    return alert(
+      "Användarnamnet finns redan, vänligen välj ett annat användarnamn"
+    );
   };
 
   return (

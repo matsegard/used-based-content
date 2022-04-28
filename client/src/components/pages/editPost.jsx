@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function EditPost() {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
-  const [user, setUser] = useState("");
+
   const location = useLocation();
   const id = location.pathname;
   const navigate = useNavigate();
@@ -24,12 +24,10 @@ export default function EditPost() {
       result = await result.json();
       console.warn(result);
       if (result) {
-        alert("Ditt inlägg är ändrat!");
+        alert("Din recension är ändrad!");
         settitle("");
         setdescription("");
-        setUser("");
         navigate("/MyProfile");
-        console.log(result);
       }
     }
   };

@@ -26,15 +26,13 @@ export default function Login() {
       setPassword("");
       setUsername("");
       login();
-      console.log(result);
-
       navigate("/MyProfile");
-      return alert("inloggning lyckades");
+      return alert("Du är inloggad");
+    } else {
+      return alert(
+        "Du är redan inloggad eller angivit fel användarnamn / lösenord"
+      );
     }
-
-    return alert(
-      "Du är redan inloggad eller angett fel användarnamn eller lösenord"
-    );
   };
 
   return (

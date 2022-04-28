@@ -7,7 +7,7 @@ const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
 const generateToken = require("../utils/generateToken");
 
-// theft proof cookie
+
 // COOKIE SESSION
 users.use(
   cookieSession({
@@ -17,9 +17,9 @@ users.use(
     secure: false,
   })
 );
-// alla startar med /users
 
-// Redovisar alla registrerade Användare i databasen
+
+// Redovisar alla registrerade Användare i databasen, används i utvecklingssyfte
 users.get("/", async (req, res) => {
   try {
     const users = await User.find({});
@@ -66,7 +66,6 @@ users.post(
   "/login",
   asyncHandler(async (req, res) => {
     if (req.session.id) {
-      console.log("redan inloggad");
       return res.status(401).send("Redan inloggad");
     }
 
@@ -78,8 +77,6 @@ users.post(
       req.session.id = user.id;
       req.session.username = user.username;
       req.session.loginDate = new Date();
-      console.log(req.session.username, req.session.id);
-
       res.status(201).json({
         username: req.session.username,
         id: req.session.id,
@@ -87,7 +84,7 @@ users.post(
         token: generateToken(user._id),
       });
     } else {
-      res.status(401);
+      res.status(401)
       throw new Error("Fel användarnamn eller lösenord");
     }
   })
@@ -96,7 +93,6 @@ users.post(
 // Redovisar inloggad Användare
 users.get("/login", (req, res) => {
   if (!req.session.id) {
-    console.log("Ej inloggad");
     return res.status(401).send("Du är inte inloggad");
   } else {
    const user = {
@@ -104,7 +100,6 @@ users.get("/login", (req, res) => {
       username: req.session.username,
     }
      res.status(201).json(user)
-    console.log("Inloggad");
   }
 });
 
@@ -116,17 +111,15 @@ users.put("/login", async (req, res) => {
   const { username } = req.body;
   var userId = req.session.id;
   if(!req.session.id){
-    return console.log('inte du')
+    return res.status(401).send("Fel användarnamn");
   }
 
 if(username === req.session.username){
   const password = req.body.password;
   const hashedPassword = await bcrypt.hash(password, 10);
   const newPassword = await User.findByIdAndUpdate(userId, { password: hashedPassword });
-console.log(newPassword)
 res.status(201).json('Byte av lösenord lyckades')
 } else {
-  console.log('fel användarnamn')
   res.status(401).send("Fel användarnamn");
 }
 });
@@ -136,11 +129,10 @@ users.delete(
   "/login",
   asyncHandler(async (req, res) => {
     if (!req.session.id) {
-      return res.status(400).send("Cannot logout when you are not logged in");
+      return res.status(400).send("Kan inte logga ut när du inte är inloggad");
     }
     req.session = null;
-    res.json("Du är nu utloggad");
-    
+    res.status(200).json("Du är nu utloggad");
   })
 );
 
