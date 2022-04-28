@@ -52,7 +52,7 @@ npm start
 
 
 
-## [React Bootstrap](https://react-bootstrap.github.io/ 📦
+## [React Bootstrap](https://react-bootstrap.github.io/ )📦
 
 This project was built using some components from React Bootstrap.
 
