@@ -6,7 +6,7 @@
 
 Travelsome.se är ett reseforum (likt tripadvisor). 
 
-Här kan medlemmar kan lägga till, ta bort och redigera inlägg! 
+Här kan medlemmar lägga till, ta bort och redigera inlägg! 
 Inloggade användare kan även byta lösenord. 
 
 [Link to repo](https://github.com/matsegard/used-based-content)
