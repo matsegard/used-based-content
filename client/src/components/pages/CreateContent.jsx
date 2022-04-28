@@ -5,7 +5,7 @@ import React, { useState } from "react";
 function CreateContent() {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
-  const [user, setUser] = useState("");
+  // const [user, setUser] = useState("");
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ function CreateContent() {
       alert("Nytt inlägg skapat");
       settitle("");
       setdescription("");
-      setUser("");
+      // setUser("");
     }
   };
   return (

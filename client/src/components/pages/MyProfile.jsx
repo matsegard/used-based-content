@@ -68,7 +68,7 @@ export default function MyProfile() {
   ]);
 
   useEffect(() => {
-    fetch("/posts/:postedBy")
+    fetch("/posts/postedBy")
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -126,13 +126,13 @@ export default function MyProfile() {
         <></>
       ) : (
         <div className="changePostContainer">
-          {/* <section>
+          <section>
             <button onClick={hideChangePost} className="leaveBtn cleanButton">
               <MdOutlineClose />
             </button>
 
             <EditPost />
-          </section> */}
+          </section>
         </div>
       )}
       {/* Om setshowuserposts = true: rendrera posts. om false: rendrera form */}
@@ -190,14 +190,10 @@ export default function MyProfile() {
                 >
                   <div>
                     <div className="postIcons">
-                      <Link to="/posts/:id">
-                        <button
-                          className="cleanButton"
-                          onClick={showChangePost}
-                        >
-                          <BsPencil />
-                        </button>
-                      </Link>
+                      <button className="cleanButton" onClick={showChangePost}>
+                        <BsPencil />
+                      </button>
+
                       <button onClick={removePost} className="cleanButton">
                         <IoTrashBinOutline />
                       </button>
