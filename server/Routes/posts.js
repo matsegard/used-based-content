@@ -98,7 +98,7 @@ router.put(
         res.json(updatedPost);
       }
     } else {
-      res.status(403).json("Du får enbart ändra dina egna inlägg");
+      res.status(403).json("You are only allowed to edit your own posts.");
     }
   })
 );
