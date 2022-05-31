@@ -71,10 +71,10 @@ router.get(
     const currentPost = await Post.findById(id);
 
     if (!currentPost) {
-      res.status(201).json("No post with this id does exist");
+      res.status(400).json("No post with this id does exist");
       return;
     } else {
-      res.status(201).json(currentPost);
+      res.status(200).json(currentPost);
     }
   })
 );
@@ -104,7 +104,7 @@ router.delete(
 
     if (postAuthor === loggedInUser) {
       if (!currentPost) {
-        res.status(200).json("No post with this id does exist");
+        res.status(400).json("No post with this id does exist");
         return;
       } else {
         const deletePost = await Post.findByIdAndRemove(id);
