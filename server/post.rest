@@ -1,26 +1,36 @@
+
+// get all posts
 GET http://localhost:5500/posts
 ###
 
-
-
+// get all posts by logged in user
+GET http://localhost:5500/posts/postedBy
+###
+// create new post
 POST http://localhost:5500/posts
 Content-Type: application/json
 
 {
-"title": "",
-"description" : ""
+"title": "test",
+"description" : "test"
 }
 ###
 
 
-
-PUT http://localhost:5500/posts/62963e99c2bac6366143ce62
+// update post by id
+PUT http://localhost:5500/posts/629688397c4ab35360606390
 Content-Type: application/json
 
 {
-"title": "", 
-"description" : ""
+"title": "Scandic Mölndal", 
+"description" : "Nyrenoverat hotell 2018, bara 10 minuters bilfärd från Korsvägen i Göteborg, där Svenska Mässan och Liseberg ligger. Oss når du enkelt från motorvägen eller med spårvagnen, utan att krångla med bilen i stan."
 }
+
+###
+
+// delete post by id
+PUT http://localhost:5500/posts/62963e99c2bac6366143ce62
+Content-Type: application/json
 
 ###
 
