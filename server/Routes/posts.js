@@ -111,7 +111,7 @@ router.delete(
         res.status(200).json(deletePost);
       }
     } else {
-      res.status(403).json("You can only delete your own posts");
+      res.status(403).json("You are only allowed to delete your own posts.");
     }
   })
 );
