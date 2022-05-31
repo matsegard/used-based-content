@@ -94,12 +94,11 @@ router.put(
         res.json("No post with this id does exist");
         return;
       } else {
-        const findAndUpdatePost = await Post.findByIdAndUpdate(id, req.body);
-        const updatedPost = (findAndUpdatePost, req.body);
+        const updatedPost = await Post.findByIdAndUpdate(id, req.body);
         res.json(updatedPost);
       }
     } else {
-      res.json("Du får enbart ändra dina egna inlägg");
+      res.status(403).json("Du får enbart ändra dina egna inlägg");
     }
   })
 );

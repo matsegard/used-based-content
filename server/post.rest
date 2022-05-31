@@ -6,8 +6,8 @@ POST http://localhost:5500/user/login
 Content-Type: application/json
 
 {
-"username": "love",
-"password" : "123"
+"username": "Erik",
+"password" : "erik"
 }
 ###
 
@@ -22,11 +22,11 @@ Content-Type: application/json
 
 
 
-PUT http://localhost:5500/posts/6296418d152725412443d4e7
+PUT http://localhost:5500/posts/62963e99c2bac6366143ce62
 Content-Type: application/json
 
 {
-"title": "satan", "description" : "gretas pung"
+"title": "ändrad", "description" : "ändrad"
 }
 
 ###
