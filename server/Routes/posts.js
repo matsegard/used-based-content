@@ -63,6 +63,27 @@ router.get(
   })
 );
 
+router.put(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const currentPost = await Post.findById(id);
+    const postAuthor = currentPost.postedBy;
+
+    const loggedInUser = req.session.username;
+
+    if (postAuthor === loggedInUser) {
+      if (!currentPost) {
+        res.json("No post with this id does exist");
+        return;
+      } else {
+        const updatedPost = await Post.findByIdAndUpdate(id, req.body);
+        res.json(updatedPost);
+      }
+    } else {
+      res.status(403).json("You are only allowed to edit your own posts.");
+
 //Ska hämta resencion by id
 router.get(
   "/:id",
@@ -79,19 +100,6 @@ router.get(
   })
 );
 
-router.put(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const newPost = await Post.findByIdAndUpdate(id, req.body);
-    if (!newPost) {
-      res.json("No post with this id does exist");
-      return;
-    } else {
-      res.json(newPost);
-    }
-  })
-);
 
 // Ta bort inlägg som en inloggad användare skapat
 router.delete(

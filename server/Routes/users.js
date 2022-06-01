@@ -7,7 +7,6 @@ const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
 const generateToken = require("../utils/generateToken");
 
-
 // COOKIE SESSION
 users.use(
   cookieSession({
@@ -17,7 +16,6 @@ users.use(
     secure: false,
   })
 );
-
 
 // Redovisar alla registrerade Användare i databasen, används i utvecklingssyfte
 users.get("/", async (req, res) => {
@@ -77,6 +75,7 @@ users.post(
       req.session.id = user.id;
       req.session.username = user.username;
       req.session.loginDate = new Date();
+      console.log(req.session.username);
       res.status(201).json({
         username: req.session.username,
         id: req.session.id,
@@ -84,7 +83,7 @@ users.post(
         token: generateToken(user._id),
       });
     } else {
-      res.status(401)
+      res.status(401);
       throw new Error("Fel användarnamn eller lösenord");
     }
   })
@@ -95,33 +94,33 @@ users.get("/login", (req, res) => {
   if (!req.session.id) {
     return res.status(401).send("Du är inte inloggad");
   } else {
-   const user = {
-      id :req.session.id,
+    const user = {
+      id: req.session.id,
       username: req.session.username,
-    }
-     res.status(201).json(user)
+    };
+    res.status(201).json(user);
   }
 });
 
-
-
-// Ändra lösenord 
+// Ändra lösenord
 users.put("/login", async (req, res) => {
   // const { password } = req.body;
   const { username } = req.body;
   var userId = req.session.id;
-  if(!req.session.id){
+  if (!req.session.id) {
     return res.status(401).send("Fel användarnamn");
   }
 
-if(username === req.session.username){
-  const password = req.body.password;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newPassword = await User.findByIdAndUpdate(userId, { password: hashedPassword });
-res.status(201).json('Byte av lösenord lyckades')
-} else {
-  res.status(401).send("Fel användarnamn");
-}
+  if (username === req.session.username) {
+    const password = req.body.password;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newPassword = await User.findByIdAndUpdate(userId, {
+      password: hashedPassword,
+    });
+    res.status(201).json("Byte av lösenord lyckades");
+  } else {
+    res.status(401).send("Fel användarnamn");
+  }
 });
 
 // Logga ut
