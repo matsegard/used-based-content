@@ -83,6 +83,9 @@ router.put(
       }
     } else {
       res.status(403).json("You are only allowed to edit your own posts.");
+    }
+  })
+);
 
 //Ska hämta resencion by id
 router.get(
@@ -99,7 +102,6 @@ router.get(
     }
   })
 );
-
 
 // Ta bort inlägg som en inloggad användare skapat
 router.delete(
