@@ -6,7 +6,6 @@ const User = require("../models/User.models");
 const cookieSession = require("cookie-session");
 const { ObjectId } = require("mongodb");
 
-
 // theft proof cookie
 // COOKIE SESSION
 router.use(
@@ -31,11 +30,10 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    
     const { title, description } = req.body;
     const postedBy = req.session.username;
-    const id = req.params.id
-    const { _id } = ObjectId(id)
+    const id = req.params.id;
+    const { _id } = ObjectId(id);
 
     if (!title || !description) {
       res.status(400);
@@ -55,47 +53,66 @@ router.post(
 );
 
 //  Hämtar alla recensioner skrivna av inloggad användare
-router.get("/postedBy", asyncHandler(async (req, res) =>{
-      const postedBy = req.session.username;
-      const userPosts = await Post.find({ postedBy });
-      res.send(userPosts);
-      return
-}))
+router.get(
+  "/postedBy",
+  asyncHandler(async (req, res) => {
+    const postedBy = req.session.username;
+    const userPosts = await Post.find({ postedBy });
+    res.send(userPosts);
+    return;
+  })
+);
 
- //Ska hämta resencion by id
-      router.get("/:id", asyncHandler(async (req, res) => {
-         const { id } = req.params;
-        const currentPost = await Post.findById(id)
-   
-         if (!currentPost) {
-           res.status(201).json("No post with this id does exist");
-           return
-         } else{
-           res.status(201).json(currentPost);
-         }
-      }))
+//Ska hämta resencion by id
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const currentPost = await Post.findById(id);
 
- router.put("/:id", asyncHandler( async (req, res) => {
-  const { id } = req.params;
-      const newPost = await Post.findByIdAndUpdate(id, req.body);
-      if(!newPost){
-        res.json("No post with this id does exist")
-           return
-      }  else{
-           res.json(newPost)
-         }
- }))
-
-
-// Låter användare ta bort sina recensioner
-router.delete("/:id", asyncHandler(async (req, res) =>{
-     const { id } = req.params;
-      const userPosts = await Post.findByIdAndRemove(id);
-      if (!userPosts) {
-      res.status(400).json("Id inte hittat");
+    if (!currentPost) {
+      res.status(400).json("No post with this id does exist");
       return;
+    } else {
+      res.status(200).json(currentPost);
     }
-      res.status(200).json(userPosts);
-}))
+  })
+);
 
+router.put(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const newPost = await Post.findByIdAndUpdate(id, req.body);
+    if (!newPost) {
+      res.json("No post with this id does exist");
+      return;
+    } else {
+      res.json(newPost);
+    }
+  })
+);
+
+// Ta bort inlägg som en inloggad användare skapat
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const currentPost = await Post.findById(id);
+    const postAuthor = currentPost.postedBy;
+    const loggedInUser = req.session.username;
+
+    if (postAuthor === loggedInUser) {
+      if (!currentPost) {
+        res.status(400).json("No post with this id does exist");
+        return;
+      } else {
+        const deletePost = await Post.findByIdAndRemove(id);
+        res.status(200).json(deletePost);
+      }
+    } else {
+      res.status(403).json("You are only allowed to delete your own posts.");
+    }
+  })
+);
 module.exports = router;
