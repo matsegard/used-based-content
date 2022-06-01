@@ -83,8 +83,12 @@ router.put(
           res.json("No post with this id does exist");
           return;
         } else {
-          const updatedPost = await Post.findByIdAndUpdate(id, req.body);
-          return res.json(updatedPost);
+          await Post.findByIdAndUpdate(id, req.body);
+          return res
+            .status(200)
+            .json(
+              `Post ${currentPost.title} by ${currentPost.postedBy} updated`
+            );
         }
       } else {
         res.status(403).json("You are only allowed to edit your own posts.");
@@ -106,7 +110,7 @@ router.get(
       res.status(400).json("No post with this id exists");
       return;
     } else {
-      res.status(200).json(currentPost);
+      res.status(200).json("Post updated");
     }
   })
 );
@@ -126,8 +130,12 @@ router.delete(
           res.status(400).json("No post with this id does exist");
           return;
         } else {
-          const deletePost = await Post.findByIdAndRemove(id);
-          return res.status(200).json(deletePost);
+          await Post.findByIdAndRemove(id);
+          return res
+            .status(200)
+            .json(
+              `Post ${currentPost.title} by ${currentPost.postedBy} deleted`
+            );
         }
       } else {
         res.status(403).json("You are only allowed to delete your own posts.");

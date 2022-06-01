@@ -7,8 +7,8 @@ POST http://localhost:5500/posts
 Content-Type: application/json
 
 {
-"title": "hej", 
-"description" : "hej"
+"title": "", 
+"description" : ""
 }
 ###
 
@@ -23,7 +23,7 @@ GET http://localhost:5500/posts/626ad1627fa346be1c9b53b2
 
 
 // update post by id
-PUT http://localhost:5500/posts/626ad1627fa346be1c9b53b2
+PUT http://localhost:5500/posts/629748f00cdb776bf2acc012
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 ###
 
 // delete post by id
-DELETE http://localhost:5500/posts/626ad1627fa346be1c9b53b2
+DELETE http://localhost:5500/posts/62974817116bb597708f9699
 ###
 
 
