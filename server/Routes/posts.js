@@ -35,19 +35,23 @@ router.post(
     const id = req.params.id;
     const { _id } = ObjectId(id);
 
-    if (!title || !description) {
-      res.status(400);
-      throw new Error("fyll i alla fält");
-    } else {
-      const post = new Post({
-        title,
-        description,
-        postedBy,
-        id,
-      });
+    if (postedBy) {
+      if (!title || !description) {
+        res.status(400);
+        throw new Error("Fill in all fields");
+      } else {
+        const post = new Post({
+          title,
+          description,
+          postedBy,
+          id,
+        });
 
-      const createdPost = await post.save();
-      res.status(201).json(createdPost);
+        const createdPost = await post.save();
+        return res.status(201).json(createdPost);
+      }
+    } else {
+      res.status(400).json("You have to be logged in to create a new post");
     }
   })
 );
@@ -73,16 +77,20 @@ router.put(
 
     const loggedInUser = req.session.username;
 
-    if (postAuthor === loggedInUser) {
-      if (!currentPost) {
-        res.json("No post with this id does exist");
-        return;
+    if (loggedInUser) {
+      if (postAuthor === loggedInUser) {
+        if (!currentPost) {
+          res.json("No post with this id does exist");
+          return;
+        } else {
+          const updatedPost = await Post.findByIdAndUpdate(id, req.body);
+          return res.json(updatedPost);
+        }
       } else {
-        const updatedPost = await Post.findByIdAndUpdate(id, req.body);
-        res.json(updatedPost);
+        res.status(403).json("You are only allowed to edit your own posts.");
       }
     } else {
-      res.status(403).json("You are only allowed to edit your own posts.");
+      res.status(400).json("You have to be logged in to update a post");
     }
   })
 );
@@ -95,7 +103,7 @@ router.get(
     const currentPost = await Post.findById(id);
 
     if (!currentPost) {
-      res.status(400).json("No post with this id does exist");
+      res.status(400).json("No post with this id exists");
       return;
     } else {
       res.status(200).json(currentPost);
@@ -112,16 +120,20 @@ router.delete(
     const postAuthor = currentPost.postedBy;
     const loggedInUser = req.session.username;
 
-    if (postAuthor === loggedInUser) {
-      if (!currentPost) {
-        res.status(400).json("No post with this id does exist");
-        return;
+    if (loggedInUser) {
+      if (postAuthor === loggedInUser) {
+        if (!currentPost) {
+          res.status(400).json("No post with this id does exist");
+          return;
+        } else {
+          const deletePost = await Post.findByIdAndRemove(id);
+          return res.status(200).json(deletePost);
+        }
       } else {
-        const deletePost = await Post.findByIdAndRemove(id);
-        res.status(200).json(deletePost);
+        res.status(403).json("You are only allowed to delete your own posts.");
       }
     } else {
-      res.status(403).json("You are only allowed to delete your own posts.");
+      res.status(400).json("You have to be logged in to delete a post");
     }
   })
 );

@@ -37,7 +37,7 @@ users.post(
 
     if (doesUserExist) {
       res.status(404);
-      throw new Error("Användare redan registrerad");
+      throw new Error("A user with the given username already exists");
     }
 
     const user = await User.create({
@@ -54,7 +54,7 @@ users.post(
       });
     } else {
       res.status(400);
-      throw new Error("Globalt fel");
+      throw new Error("Globalt error");
     }
   })
 );
@@ -64,7 +64,7 @@ users.post(
   "/login",
   asyncHandler(async (req, res) => {
     if (req.session.id) {
-      return res.status(401).send("Redan inloggad");
+      return res.status(401).send("Already logged in");
     }
 
     const { username, password } = req.body;
@@ -84,7 +84,7 @@ users.post(
       });
     } else {
       res.status(401);
-      throw new Error("Fel användarnamn eller lösenord");
+      throw new Error("Wrong username or password");
     }
   })
 );
@@ -92,7 +92,7 @@ users.post(
 // Redovisar inloggad Användare
 users.get("/login", (req, res) => {
   if (!req.session.id) {
-    return res.status(401).send("Du är inte inloggad");
+    return res.status(401).send("You're not logged in");
   } else {
     const user = {
       id: req.session.id,
@@ -108,7 +108,7 @@ users.put("/login", async (req, res) => {
   const { username } = req.body;
   var userId = req.session.id;
   if (!req.session.id) {
-    return res.status(401).send("Fel användarnamn");
+    return res.status(401).send("Wrong username");
   }
 
   if (username === req.session.username) {
@@ -117,9 +117,9 @@ users.put("/login", async (req, res) => {
     const newPassword = await User.findByIdAndUpdate(userId, {
       password: hashedPassword,
     });
-    res.status(201).json("Byte av lösenord lyckades");
+    res.status(201).json("Password updated successfully");
   } else {
-    res.status(401).send("Fel användarnamn");
+    res.status(401).send("Wrong username");
   }
 });
 
@@ -128,10 +128,10 @@ users.delete(
   "/login",
   asyncHandler(async (req, res) => {
     if (!req.session.id) {
-      return res.status(400).send("Kan inte logga ut när du inte är inloggad");
+      return res.status(400).send("You have to be logged in to log out");
     }
     req.session = null;
-    res.status(200).json("Du är nu utloggad");
+    res.status(200).json("You are now logged out");
   })
 );
 
