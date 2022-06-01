@@ -1,0 +1,12 @@
+DELETE http://localhost:5500/posts/626ad87d3d3eb0e96fcdcd37
+###
+
+
+POST http://localhost:5500/posts
+Content-Type: application/json
+
+{
+"title": "deletetest", 
+"description" : "testa delete post"
+}
+

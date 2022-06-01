@@ -63,22 +63,6 @@ router.get(
   })
 );
 
-//Ska hämta resencion by id
-router.get(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const currentPost = await Post.findById(id);
-
-    if (!currentPost) {
-      res.status(201).json("No post with this id does exist");
-      return;
-    } else {
-      res.status(201).json(currentPost);
-    }
-  })
-);
-
 router.put(
   "/:id",
   asyncHandler(async (req, res) => {
@@ -99,22 +83,44 @@ router.put(
       }
     } else {
       res.status(403).json("You are only allowed to edit your own posts.");
+
+//Ska hämta resencion by id
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const currentPost = await Post.findById(id);
+
+    if (!currentPost) {
+      res.status(400).json("No post with this id does exist");
+      return;
+    } else {
+      res.status(200).json(currentPost);
     }
   })
 );
 
-// Låter användare ta bort sina recensioner
+
+// Ta bort inlägg som en inloggad användare skapat
 router.delete(
   "/:id",
   asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const userPosts = await Post.findByIdAndRemove(id);
-    if (!userPosts) {
-      res.status(400).json("Id inte hittat");
-      return;
+    const currentPost = await Post.findById(id);
+    const postAuthor = currentPost.postedBy;
+    const loggedInUser = req.session.username;
+
+    if (postAuthor === loggedInUser) {
+      if (!currentPost) {
+        res.status(400).json("No post with this id does exist");
+        return;
+      } else {
+        const deletePost = await Post.findByIdAndRemove(id);
+        res.status(200).json(deletePost);
+      }
+    } else {
+      res.status(403).json("You are only allowed to delete your own posts.");
     }
-    res.status(200).json(userPosts);
   })
 );
-
 module.exports = router;
